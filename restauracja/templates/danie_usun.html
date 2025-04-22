@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block podtytul %}Danie – usuwanie{% endblock %}
+
+{% block tresc %}
+  <form method="POST" action="{{ url_for('dania.usun', d_id=rekord.id) }}">
+    <p>Czy na pewno usunąć danie:</p>
+    <p>{{ rekord.nazwa }}, {{ rekord.cena }}, {% if rekord.menu %} dostępne {% else %} niedostępne {% endif %}</p>
+    <br>
+    <button type="submit">Usuń</button>
+  </form>
+{% endblock %}

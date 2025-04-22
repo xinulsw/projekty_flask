@@ -1,0 +1,94 @@
+BEGIN;
+
+DROP TABLE IF EXISTS klienci;
+CREATE TABLE klienci (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  imie TEXT NOT NULL,
+  nazwisko TEXT NOT NULL
+);
+
+DROP TABLE IF EXISTS stoliki;
+CREATE TABLE stoliki (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  l_miejsc INTEGER NOT NULL DEFAULT 0
+);
+
+DROP TABLE IF EXISTS rezerwacje;
+CREATE TABLE rezerwacje (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  termin TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  id_stolika INTEGER,
+  id_klienta INTEGER,
+  FOREIGN KEY (id_stolika) REFERENCES stoliki (id) ON DELETE CASCADE,
+  FOREIGN KEY (id_klienta) REFERENCES klienci (id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS rabaty;
+CREATE TABLE rabaty (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  data_od TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  data_do TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  id_klienta INTEGER,
+  FOREIGN KEY (id_klienta) REFERENCES klienci (id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS polprodukty;
+CREATE TABLE polprodukty (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nazwa TEXT NOT NULL,
+  l_kg FLOAT(5, 2)
+);
+
+DROP TABLE IF EXISTS dania;
+CREATE TABLE dania (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nazwa TEXT NOT NULL,
+  cena DECIMAL(5, 2) DEFAULT 0,
+  menu BOOLEAN NOT NULL CHECK (menu IN (0, 1))
+);
+
+DROP TABLE IF EXISTS sklady_dan;
+CREATE TABLE sklady_dan (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  l_kg FLOAT(5, 2),
+  id_dania INTEGER,
+  id_polproduktu INTEGER,
+  FOREIGN KEY (id_dania) REFERENCES dania (id) ON DELETE CASCADE,
+  FOREIGN KEY (id_polproduktu) REFERENCES polprodukty (id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS zamowienia;
+CREATE TABLE zamowienia (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id_klienta INTEGER NOT NULL,
+  data TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  rabat DECIMAL(5, 2) DEFAULT 0,
+  FOREIGN KEY (id_klienta) REFERENCES klienci (id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS sklady_zamowien;
+CREATE TABLE sklady_zamowien (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id_zamowienia INTEGER,
+  id_dania INTEGER,
+  liczba INTEGER DEFAULT 1,
+  FOREIGN KEY (id_zamowienia) REFERENCES zamowienia (id) ON DELETE CASCADE,
+  FOREIGN KEY (id_dania) REFERENCES zamowienia (id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user;
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nick TEXT UNIQUE NOT NULL,
+  grupa TEXT NOT NULL CHECK (grupa IN ('admin', 'pracownik', 'kelner', 'kucharz')),
+  haslo TEXT NOT NULL
+);
+
+INSERT INTO dania VALUES (NULL, 'Zupa ogórkowa', 17.5, 1);
+INSERT INTO dania VALUES (NULL, 'Zupa pomidorowa', 18, 1);
+INSERT INTO dania VALUES (NULL, 'Barszcz czerwony', 14, 1);
+INSERT INTO dania VALUES (NULL, 'Żurek biały', 16.99, 1);
+
+INSERT INTO users VALUES (NULL, 'admin', 'admin', 'pbkdf2:sha256:600000$D80iPGFFhonTUHno$ce6148bfe733d5007f5b8129916c7f59e6734ce66072b8a01171d341151d885e');
+INSERT INTO klienci VALUES (NULL, 'Klient', 'Domyślny');
+COMMIT;

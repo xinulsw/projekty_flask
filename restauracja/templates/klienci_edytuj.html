@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block podtytul %}Danie – edycja{% endblock %}
+
+{% block tresc %}
+  <form method="POST" action="{{ url_for('dania.edytuj', d_id=rekord.id) }}">
+    <label for="nazwa">Nazwa:</label>
+    <input type="text" id="nazwa" name="nazwa" value="{{ rekord.nazwa }}" required>
+    <br>
+    <label for="cena">Cena:</label>
+    <input type="number" id="cena" name="cena" min=".01" value="{{ rekord.cena }}" step=".01" required>
+    <br>
+    <label for="menu">Czy w menu:</label>
+    <input type="checkbox" id="menu" name="menu" {% if rekord.menu %} checked="checked" {% endif %}>
+    <br>
+    <button type="submit">Zapisz</button>
+  </form>
+{% endblock %}

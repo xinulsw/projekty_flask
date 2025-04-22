@@ -1,0 +1,15 @@
+<!-- projekty_flask/quiz_orm/templates/users/user_usun.html -->
+{% extends "base.html" %}
+{% set active_page = "usun" %}
+{% block h1 %} Usuwanie użytkownika {% endblock %}
+{% block body %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Usuń konto</h3>
+    <form method="POST" action="">
+      <div class="field">
+          Czy na pewno chcesz usunąć swoje konto?
+      </div>
+      <button class="button is-block is-info is-fullwidth">Usuń</button>
+    </form>
+</div>
+{% endblock %}

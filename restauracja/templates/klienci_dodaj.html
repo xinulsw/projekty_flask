@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block podtytul %}Klient – dodawanie{% endblock %}
+
+{% block tresc %}
+  <form method="POST" action="{{ url_for('klienci.dodaj') }}">
+    <label for="imie">Imię:</label>
+    <input type="text" id="imie" name="imie" value="" required>
+    <br>
+    <label for="nazwisko">Nazwisko:</label>
+    <input type="text" id="nazwisko" name="nazwisko" value="" required>
+    <br>
+    <button type="submit">Dodaj</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% set nawigacja = [
+  ('index', 'index', 'Strona główna', 'nie'),
+  ('users.dodaj', 'dodaj', 'Utwórz konto', 'nie'),
+  ('users.loguj', 'loguj', 'Zaloguj się', 'nie'),
+  ('users.wyloguj', 'dodaj', 'Wyloguj się', 'tak'),
+  ('users.usun', 'usun', 'Usuń konto', 'tak'),
+  ('quiz.index', 'quiz', 'Quiz', 'tak'),
+] %}
+
+{% set active_page = active_page|default('index') %}
+
+  <div class="hero-head">
+    <nav class="navbar">
+      <div class="container">
+        <div class="navbar-brand">
+          <a class="navbar-item">
+            <img src="{{ url_for('static', filename='imgs/quiz_white.png') }}" alt="Logo">
+          </a>
+          <span class="navbar-burger burger" data-target="navbarmenu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </div>
+
+        <div id="navbarmenu" class="navbar-menu">
+          <div class="navbar-end">
+            {% for href, id, tekst, zalogowany in nawigacja %}
+              {% if not current_user.is_authenticated %}
+                {% if zalogowany == 'nie' %}
+                <a class="navbar-item{% if id == active_page %} is-active{% endif %}" href="{{ url_for(href) }}">
+                  {{ tekst|e }}
+                </a>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+            {% if current_user.is_authenticated %}
+            <span class="navbar-item">
+              <a class="button is-primary is-inverted">
+                <span>Użytkownik: {{ current_user.nick }}</span>
+              </a>
+            </span>
+              {% for href, id, tekst, zalogowany in nawigacja %}
+                {% if zalogowany == 'tak' %}
+                <a class="navbar-item{% if id == active_page %} is-active{% endif %}" href="{{ url_for(href) }}">
+                  {{ tekst|e }}
+                </a>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>

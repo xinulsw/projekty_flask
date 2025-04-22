@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block podtytul %}Zmaówienia{% endblock %}
+
+{% block tresc %}
+    <ol>
+      {% for rekord in dane %}
+        <li>{{ rekord.imie }}, {{ rekord.nazwisko }}, {{ rekord.data }} –
+          <a href="{{ url_for('zamowienia.edytuj', z_id=rekord.id) }}">Edytuj</a>,
+          <a href="{{ url_for('zamowienia.usun', z_id=rekord.id) }}">Usuń</a>
+        </li>
+      {% endfor %}
+    </ol>
+    <p><a href="{{ url_for('zamowienia.dodaj') }}">Dodaj zamówienie</a></p>
+{% endblock %}

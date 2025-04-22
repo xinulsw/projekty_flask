@@ -1,0 +1,12 @@
+<!-- projekty_flask/todo/templates/users/user_dodaj.html -->
+{% extends "base.html" %}
+{% set active_page = "dodaj" %}
+{% block h1 %} Dodawanie konta {% endblock %}
+{% block body %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Załóż konto</h3>
+    <div class="box">
+        {% include "users/user_form.html" %}
+    </div>
+</div>
+{% endblock %}

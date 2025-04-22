@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block podtytul %}Użytkownik – usuwanie{% endblock %}
+
+{% block tresc %}
+  <form method="POST" action="{{ url_for('users.usun', u_id=rekord.id) }}">
+    <p>Czy na pewno usunąć użytkownika:</p>
+    <p>{{ rekord.id }}, {{ rekord.nick }}, {{ rekord.grupa }}</p>
+    <br>
+    <button type="submit">Usuń</button>
+  </form>
+{% endblock %}

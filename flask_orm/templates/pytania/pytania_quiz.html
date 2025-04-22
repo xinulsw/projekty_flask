@@ -1,0 +1,26 @@
+<!-- projekty_flask/quiz_orm/templates/pytania/pytania_lista.html -->
+{% extends "index.html" %}
+{% block h1 %} Quiz – odpowiedz na pytania {% endblock %}
+{% block body %}
+  <!-- formularz z quizem -->
+  <form method="POST">
+    <!-- pętla odczytująca kolejne pytania z listy -->
+    {% for p in pytania %}
+      <p>
+        <!-- wypisujemy pytanie -->
+        {{ p.pytanie }} <br>
+
+        <!-- pętla odczytująca możliwe odpowiedzi dla danego pytania -->
+        {% for o in p.odpowiedzi %}
+          <!-- etykieta i pole radio button, aby można było zaznaczyć odpowiedź -->
+          <label class="container">{{ o.odpowiedz }}
+            <input type="radio" value="{{ o.odpowiedz }}" name="{{ p.id }}">
+          </label>
+        {% endfor %}
+      </p>
+    {% endfor %}
+    <!-- przycisk wysyłający wypełniony formularz -->
+    <button type="submit" class="btn btn-default">Sprawdź odpowiedzi</button>
+  </form>
+
+{% endblock %}

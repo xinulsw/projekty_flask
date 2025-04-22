@@ -1,0 +1,48 @@
+html { font-size: 62.5%; }
+body {
+    font-size: 1.6rem;
+    font-family: Arial, Helvetica, sans-serif;
+}
+header { font-size: 2rem; }
+footer {
+    width: 90%;
+    font-size: 1.8rem;
+    text-align: right;
+    padding: 1rem;
+}
+label, input, button {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.2rem;
+}
+button {
+    font-size: 1.6rem;
+}
+.center-txt { text-align: center; }
+.center {
+    margin: 1rem auto;
+    width: 80%;
+    padding: 0.8rem;
+}
+.menu {
+    background: lightblue;
+    border: 2px solid lightblue;
+    border-radius: 10px;
+    font-size: 1.6rem;
+}
+.info {
+    border: 2px solid green;
+    border-radius: 5px;
+}
+.tresc {
+    border: 2px solid gray;
+    border-radius: 5px;
+    font-size: 1.8rem;
+}
+
+.form-flex {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 50%;
+}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block podtytul %}Użytkownicy{% endblock %}
+
+{% block tresc %}
+    <ol>
+      {% for rekord in dane %}
+        <li>{{ rekord.id }}, {{ rekord.nick }}, {{ rekord.grupa }} –
+          <a href="{{ url_for('users.edytuj', u_id=rekord.id) }}">Edytuj</a>,
+          <a href="{{ url_for('users.usun', u_id=rekord.id) }}">Usuń</a>
+        </li>
+      {% endfor %}
+    </ol>
+    <p><a href="{{ url_for('users.dodaj') }}">Dodaj użytkownika</a></p>
+{% endblock %}

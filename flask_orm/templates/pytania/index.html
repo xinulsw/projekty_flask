@@ -1,0 +1,10 @@
+<!-- projekty_flask/quiz_orm/templates/pytania/index.html -->
+{% extends "base.html" %}
+{% block h1 %} Quiz {% endblock %}
+{% block body %}
+    <p>
+        <a href="{{ url_for('quiz.lista') }}">Lista pytań »</a>
+        <a href="{{ url_for('quiz.quiz') }}">Quiz »</a>
+        <a href="{{ url_for('quiz.dodaj_pytanie') }}">Dodaj pytanie »</a>
+    </p>
+{% endblock %}

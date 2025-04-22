@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Restauracja{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="center-txt">
+      <h1>Restauracja</h1>
+      <h2>{% block podtytul %}{% endblock %}</h2>
+    </header>
+
+  <nav class="center menu">
+    <p>
+      <a href="{{ url_for('index') }}">Restauracja</a>
+      – <a href="{{ url_for('dania.lista') }}">Dania</a>
+      – <a href="{{ url_for('klienci.lista') }}">Klienci</a>
+      – <a href="{{ url_for('zamowienia.lista') }}">Zamówienia</a>
+
+      {% if g.user['grupa'] in ('admin', 'pracownik') %}
+      – <a href="{{ url_for('users.lista') }}">Użytkownicy</a>
+      {% endif %}
+
+      {% if g.user %}
+      – <a href="{{ url_for('users.wyloguj') }}">Wyloguj</a>
+      {% else %}
+      – <a href="{{ url_for('users.zaloguj') }}">Zaloguj</a>
+      {% endif %}
+    </p>
+  </nav>
+
+{% with komunikaty = get_flashed_messages() %}
+{% if komunikaty %}
+  <section class="center info">
+      <p>
+        {% for komunikat in komunikaty %}
+        <span class="{{ kategoria }}">{{ komunikat }}</span><br>
+        {% endfor %}
+      </p>
+  </section>
+{% endif %}
+{% endwith %}
+
+  <section class="center tresc">
+    {% block tresc %}{%endblock%}
+  </section>
+
+ <footer>Wykonano w aplikacji <a href="https://flask.palletsprojects.com/en/2.3.x/">Flask v. 2.3.2</a>.</footer>
+
+</body>
+</html>

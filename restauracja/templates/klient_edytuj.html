@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block podtytul %}Klient – edycja{% endblock %}
+
+{% block tresc %}
+  <form method="POST" action="{{ url_for('klienci.edytuj', k_id=rekord.id) }}">
+    <label for="nazwa">Imię:</label>
+    <input type="text" id="imie" name="imie" value="{{ rekord.imie }}" required />
+    <br>
+    <label for="cena">Nazwisko:</label>
+    <input type="text" id="nazwisko" name="nazwisko" value="{{ rekord.nazwisko }}" required />
+    <br>
+    <button type="submit">Zapisz</button>
+  </form>
+{% endblock %}

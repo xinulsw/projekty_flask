@@ -1,0 +1,42 @@
+<!-- projekty_flask/todo/templates/users/loguj.html -->
+{% extends "base.html" %}
+{% set active_page = "loguj" %}
+{% block h1 %} Logowanie użytkownika {% endblock %}
+{% block body %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Zaloguj się</h3>
+    <div class="box">
+        <form method="POST" action="">
+            {{ form.csrf_token }}
+            <div class="field">
+                {% if form.email.errors %}
+                    <ul class="errors">
+                    {% for error in form.email.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+                <div class="control">
+                    {{ form.email.label(class="label") }}
+                    {{ form.email(class="input") }}
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                {% if form.haslo.errors %}
+                    <ul class="errors">
+                    {% for error in form.haslo.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+                    {{ form.haslo.label(class="label") }}
+                    {{ form.haslo(class="input") }}
+                </div>
+            </div>
+            <button class="button is-block is-info is-fullwidth">Zaloguj</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

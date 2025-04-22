@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block podtytul %}Danie – dodawanie{% endblock %}
+
+{% block tresc %}
+  <form method="POST" action="{{ url_for('dania.dodaj') }}">
+    <label for="nazwa">Nazwa:</label>
+    <input type="text" id="nazwa" name="nazwa" value="" required>
+    <br>
+    <label for="cena">Cena:</label>
+    <input type="number" id="cena" name="cena" min=".01" value="0.01" step=".01" required>
+    <br>
+    <label for="menu">Czy w menu:</label>
+    <input type="checkbox" id="menu" name="menu" checked="checked">
+    <br>
+    <button type="submit">Dodaj</button>
+  </form>
+{% endblock %}

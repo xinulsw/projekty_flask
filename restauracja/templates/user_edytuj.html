@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block podtytul %}Użytkownik – edycja{% endblock %}
+
+{% block tresc %}
+  <form method="POST" action="{{ url_for('users.edytuj', u_id=rekord.id) }}">
+    <label for="nick">Nick:</label>
+    <input type="text" id="nick" name="nick" value="{{ rekord.nick }}" required />
+    <br>
+    <fieldset>
+    <legend>Grupa</legend>
+      {% for grupa in "admin", "pracownik", "kelner", "kucharz" %}
+        {% if rekord.grupa == grupa: %}
+          <input type="radio" id="{{ grupa }}" name="grupa" value="{{ grupa }}" checked> <label for="{{ grupa }}">{{ grupa }}</label>
+        {% else %}
+          <input type="radio" id="{{ grupa }}" name="grupa" value="{{ grupa }}"> <label for="{{ grupa }}">{{ grupa }}</label>
+        {% endif %}
+      {% endfor %}
+    </fieldset>
+    <br>
+    <label for="haslo">Hasło:</label>
+    <input type="password" id="haslo" name="haslo">
+    <button type="submit">Zapisz</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block podtytul %}Klient – usuwanie{% endblock %}
+
+{% block tresc %}
+  <form method="POST" action="{{ url_for('klienci.usun', k_id=rekord.id) }}">
+    <p>Czy na pewno usunąć klienta:</p>
+    <p>{{ rekord.id }}, {{ rekord.imie }}, {{ rekord.nazwisko }}</p>
+    <br>
+    <button type="submit">Usuń</button>
+  </form>
+{% endblock %}

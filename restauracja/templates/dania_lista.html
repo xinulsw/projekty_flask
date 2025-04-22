@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block podtytul %}Dania – lista{% endblock %}
+
+{% block tresc %}
+  <ol>
+    {% for rekord in dane %}
+      <li>{{ rekord.nazwa }}, {{ rekord.cena }}, {% if rekord.menu %} dostępne {% else %} niedostępne {% endif %} –
+        <a href="{{ url_for('dania.edytuj', d_id=rekord.id) }}">Edytuj</a>,
+        <a href="{{ url_for('dania.usun', d_id=rekord.id) }}">Usuń</a>
+      </li>
+    {% endfor %}
+  </ol>
+  <p><a href="{{ url_for('dania.dodaj') }}">Dodaj danie</a></p>
+{% endblock %}

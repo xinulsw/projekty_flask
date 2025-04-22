@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block podtytul %}Klienci{% endblock %}
+
+{% block tresc %}
+    <ol>
+      {% for rekord in dane %}
+        <li>{{ rekord.imie }}, {{ rekord.nazwisko }} –
+          <a href="{{ url_for('klienci.edytuj', k_id=rekord.id) }}">Edytuj</a>,
+          <a href="{{ url_for('klienci.usun', k_id=rekord.id) }}">Usuń</a>
+        </li>
+      {% endfor %}
+    </ol>
+    <p><a href="{{ url_for('klienci.dodaj') }}">Dodaj klienta</a></p>
+{% endblock %}

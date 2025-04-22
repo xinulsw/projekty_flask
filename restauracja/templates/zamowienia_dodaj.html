@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block podtytul %}Zamówienie – dodawanie{% endblock %}
+
+{% block tresc %}
+  <form method="POST" action="{{ url_for('zamowienia.dodaj') }}">
+    <label for="klient">Klient:</label>
+      <select name="klient" id="klient" required>
+        <option value="">Wybierz klienta...</option>
+      {% for k in klienci %}
+        <option value="{{ k.id }}">{{ k.imie }} {{ k.nazwisko }}</option>
+      {% endfor %}
+      </select>
+    <br>
+    <label for="data">Data, godzina:</label>
+    <input type="datetime-local" id="data" name="data" value="{{ dzis }}" required>
+    <br>
+      <fieldset>
+      <legend>Dania</legend>
+      <p>Zaznacz dania:</p>
+        {% for d in dania %}
+          <div style="white-space:nowrap">
+            <input type="checkbox" name="dania" value="{{ d.id }}"> {{ d.nazwa }}, {{ d.cena }} zł &nbsp;
+            <input type="number" name="liczba{{ d.id }}" value="1" min="0" step="1">
+          </div>
+        {% endfor %}
+      </fieldset>
+    <br>
+    <label for="rabat">Rabat:</label>
+    <input type="number" id="rabat" name="rabat" value="0" step=".01">
+    <button type="submit">Dodaj</button>
+  </form>
+{% endblock %}

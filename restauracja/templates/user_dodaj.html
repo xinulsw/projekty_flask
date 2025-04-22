@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block podtytul %}Użytkownik – dodawanie{% endblock %}
+
+{% block tresc %}
+  <form method="POST" action="{{ url_for('users.dodaj') }}">
+    <label for="nick">Nick:</label>
+    <input type="text" id="nick" name="nick" required />
+    <br>
+    <fieldset>
+    <legend>Grupa</legend>
+      {% for grupa in "admin", "pracownik", "kelner", "kucharz" %}
+          <input type="radio" id="{{ grupa }}" name="grupa" value="{{ grupa }}"> <label for="{{ grupa }}">{{ grupa }}</label>
+      {% endfor %}
+    </fieldset>
+    <br>
+    <label for="haslo">Hasło:</label>
+    <input type="password" id="haslo" name="haslo" required />
+    <button type="submit">Dodaj</button>
+  </form>
+{% endblock %}
