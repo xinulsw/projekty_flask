@@ -1,0 +1,26 @@
+<!-- projekty_flask/quiz_orm/templates/kategorie/index.html -->
+{% extends "base.html" %}
+{% set active_page = "kategorie" %}
+{% block h1 %} Kategorie {% endblock %}
+{% block body %}
+PIP
+<aside class="menu">
+<p class="menu-label">Kategorie</p>
+<ul class="menu-list">
+  <li><a href="{{ url_for('kategorie.kategoria_lista') }}">Lista kategorii »</a></li>
+  <li><a href="{{ url_for('kategorie.kategoria_lista') }}">Dodaj kategorię »</a></li>
+</ul>
+</aside>
+
+<h2>Lista kategorii</h2>
+  <ol>
+    {% for k in items %}
+      <li>
+        <!-- wypisujemy kategorie -->
+        {{ k.kategoria }}
+        <a href="{{ url_for('kategorie.edytuj', kid=k.id ) }}" class="button is-link">Edytuj</a>
+        <a href="{{ url_for('kategoria.usun', kid=p.id ) }}" class="button is-link">Usuń</a>
+      </li>
+    {% endfor %}
+  </ol>
+{% endblock %}

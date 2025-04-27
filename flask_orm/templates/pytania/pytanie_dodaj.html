@@ -1,6 +1,7 @@
 <!-- projekty_flask/quiz_orm/templates/pytania/pytanie_dodaj.html -->
 {% extends "base.html" %}
-{% block h1 %} Quiz – dodawanie pytań{% endblock %}
+{% set active_page = "pytania" %}
+{% block h1 %} Dodawanie pytania{% endblock %}
 {% block body %}
-    {% include "quiz/pytanie_form.html" %}
+    {% include "pytania/pytanie_form.html" %}
 {% endblock %}

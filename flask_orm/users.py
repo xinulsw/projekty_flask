@@ -8,7 +8,7 @@ from .forms import UserFormCreate, UserFormLogin
 from .db import db
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
-bp = Blueprint('users', __name__, template_folder='templates', url_prefix='/users')
+bp = Blueprint('users', __name__)
 
 @bp.route('/dodaj', methods=['GET', 'POST'])
 def dodaj():

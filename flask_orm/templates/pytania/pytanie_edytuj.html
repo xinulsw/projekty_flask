@@ -1,6 +1,7 @@
 <!-- projekty_flask/quiz_orm/templates/pytania/pytanie_edytuj.html -->
 {% extends "index.html" %}
-{% block h1 %} Quiz – edycja pytań {% endblock %}
+{% set active_page = "pytania" %}
+{% block h1 %} Edytowanie pytania {% endblock %}
 {% block body %}
     {% include "quiz/pytanie_form.html" %}
 {% endblock %}

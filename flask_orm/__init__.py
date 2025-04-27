@@ -11,7 +11,7 @@ def create_app():
         SQLALCHEMY_DATABASE_URI='sqlite:///' +
                                 os.path.join(app.root_path, 'db.sqlite'),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
-        SITE_NAME='pytania ORM SQLAlchemy'
+        SITE_NAME='Aplikacja Flask SQLAlchemy'
     )
 
     try:
@@ -23,11 +23,22 @@ def create_app():
     db.init_app(app)
 
     from . import users
-    app.register_blueprint(users.bp)
+    app.register_blueprint(users.bp, url_prefix='/users')
     users.login_manager.init_app(app)
 
+    from .views import ListView
+    from .models import Kategoria
+
+    app.add_url_rule(
+        '/kategorie/',
+        view_func=ListView.as_view('kategorie_lista', Kategoria, 'kategorie/index.html', 'Lista kategorii'),
+    )
+
+    from . import kategorie
+    app.register_blueprint(kategorie.bp, url_prefix='/kategorie')
+
     from . import pytania
-    app.register_blueprint(pytania.bp)
+    app.register_blueprint(pytania.bp, url_prefix='/pytania')
 
     @app.route('/')
     def index():

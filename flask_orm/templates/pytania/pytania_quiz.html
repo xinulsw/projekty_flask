@@ -1,6 +1,7 @@
 <!-- projekty_flask/quiz_orm/templates/pytania/pytania_lista.html -->
 {% extends "index.html" %}
-{% block h1 %} Quiz – odpowiedz na pytania {% endblock %}
+{% set active_page = "pytania" %}
+{% block h1 %} Odpowiedz na pytania {% endblock %}
 {% block body %}
   <!-- formularz z quizem -->
   <form method="POST">

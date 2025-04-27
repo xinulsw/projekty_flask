@@ -4,6 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from flask_login import UserMixin
 from .db import db
 
+
 class User(UserMixin, db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     email: Mapped[str] = mapped_column(String(120), unique=True)
@@ -24,10 +25,13 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return f'<User {self.nick!r}>'
 
+
 @event.listens_for(User.__table__, 'after_create')
 def create_user(*args, **kwargs):
-    db.session.add(User(email="adam@home.net", nick='adam', haslo='scrypt:32768:8:1$b6ySf4OhUqADg4os$9fab79b9175c7e1ac341d06b72a3bb3e3a213733c6211bfa7f2b388988065e837df630be38e7eb5729d59db4f5e7d0abd7886e0697125f1a0e8a0eadd6a9eb3a'))
+    db.session.add(User(email="adam@home.net", nick='adam',
+                        haslo='scrypt:32768:8:1$b6ySf4OhUqADg4os$9fab79b9175c7e1ac341d06b72a3bb3e3a213733c6211bfa7f2b388988065e837df630be38e7eb5729d59db4f5e7d0abd7886e0697125f1a0e8a0eadd6a9eb3a'))
     db.session.commit()
+
 
 class Kategoria(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
@@ -37,11 +41,9 @@ class Kategoria(db.Model):
     pytania: Mapped[List['Pytanie']] = relationship(
         'Pytanie', back_populates='kategoria')
 
-# @event.listens_for(Kategoria.__table__, 'after_create')
-# def dodaj_kategorie(*args, **kwargs):
-#     for k in ['stolice państw', 'matematyka', 'chemia']:
-#         db.session.add(Kategoria(kategoria=k))
-#     db.session.commit()
+    def __repr__(self):
+        return self.kategoria
+
 
 class Pytanie(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
@@ -57,6 +59,7 @@ class Pytanie(db.Model):
 
     def __repr__(self):
         return self.pytanie
+
 
 class Odpowiedz(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)

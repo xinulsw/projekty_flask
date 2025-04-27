@@ -1,8 +1,9 @@
 <!-- projekty_flask/quiz_orm/templates/pytania/pytanie_edytuj.html -->
 {% extends "index.html" %}
-{% block h1 %} Quiz – usuwanie pytania {% endblock %}
+{% set active_page = "pytania" %}
+{% block h1 %} Usuwanie pytania {% endblock %}
 {% block body %}
-  <form method="POST" action="{{ url_for('quiz.usun', pid=pytanie.id) }}">
+  <form method="POST" action="{{ url_for('pytanie.usun', pid=pytanie.id) }}">
     <!-- wstawiamy id pytania -->
     <p class="lead">Czy na pewno chcesz usunąć pytanie:</p>
     <p>{{ pytanie.pytanie }}</p>

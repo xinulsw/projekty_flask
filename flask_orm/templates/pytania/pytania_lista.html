@@ -8,8 +8,8 @@
     <li>
       <!-- wypisujemy pytanie -->
       {{ p.pytanie }}
-      <a href="{{ url_for('quiz.edytuj', pid=p.id ) }}" class="btn btn-default">Edytuj</a>
-      <a href="{{ url_for('quiz.usun', pid=p.id ) }}" class="btn btn-default">Usuń</a>
+      <a href="{{ url_for('pytania.edytuj', pid=p.id ) }}" class="btn btn-default">Edytuj</a>
+      <a href="{{ url_for('pytania.usun', pid=p.id ) }}" class="btn btn-default">Usuń</a>
     </li>
   {% endfor %}
   </ol>

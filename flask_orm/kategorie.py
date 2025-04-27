@@ -1,26 +1,21 @@
 from flask import (
-    Blueprint, flash, g, render_template, request, redirect, url_for
+    Blueprint, flash, render_template, request, redirect, url_for
 )
-from .db import db
+import flask_orm
+from .views import ListView
 from .models import Kategoria
 from .forms import KategoriaForm
 
-bp = Blueprint('pytania', __name__, template_folder='pytania', url_prefix='/pytania')
+bp = Blueprint('kategorie', __name__, template_folder='kategorie')
 
-@bp.route('/')
-def index():
-    return render_template('pytania/index.html')
-
-@bp.route('/kategorie/lista')
-def kategorie_lista():
-    """Pobranie z bazy i wyświetlenie wszystkich pytań"""
-    # pytania = db.session.execute(db.select(Pytanie)).scalars()
-    pytania = Pytanie.query.all()
-    if not pytania:
-        flash('Brak pytań!', 'kom')
-        return redirect(url_for('pytania.index'))
-
-    return render_template('pytania/pytania_lista.html', pytania=pytania)
+# @bp.route('/')
+# def index():
+#     kategorie = Kategoria.query.all()
+#     if not kategorie:
+#         flash('Brak kategorii!', 'kom')
+#         return redirect(url_for('kategorie.index'))
+#
+#     return render_template('kategorie/index.html', kategorie=kategorie)
 
 @bp.route('/kategorie/dodaj')
 def kategoria_dodaj():
