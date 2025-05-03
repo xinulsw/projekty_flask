@@ -36,7 +36,8 @@ login_manager.login_message = u'Zaloguj się, żeby wejść na tę stronę.'
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    # return User.query.get(int(user_id))
+    return db.session.execute(db.select(User).filter_by(id=user_id)).scalar_one()
 
 @bp.route('/loguj', methods=['GET', 'POST'])
 def loguj():

@@ -14,8 +14,7 @@ def index():
 @bp.route('/pytania/lista')
 def pytania_lista():
     """Pobranie z bazy i wyświetlenie wszystkich pytań"""
-    # pytania = db.session.execute(db.select(Pytanie)).scalars()
-    pytania = Pytanie.query.all()
+    pytania = db.session.execute(db.select(Pytanie)).scalars()
     if not pytania:
         flash('Brak pytań!', 'kom')
         return redirect(url_for('pytania.index'))

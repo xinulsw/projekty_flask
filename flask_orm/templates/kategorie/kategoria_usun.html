@@ -1,0 +1,21 @@
+<!-- projekty_flask/todo/templates/kategorie/kategoria_dodaj.html -->
+{% extends "base.html" %}
+{% set active_page = "kategorie" %}
+{% block h1 %} Usuwanie kategorii {% endblock %}
+{% block body %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Usuń kategorię</h3>
+    <div class="box">
+        <form method="POST" class="form-inline" action="">
+            {{ form.csrf_token }}
+            <div class="field">
+                <div class="control">
+                    {{ form.kategoria.label(class="label") }}
+                    {{ form.kategoria(class="input") }}
+                </div>
+            </div>
+            {{ form.submit(class="button is-block is-info is-fullwidth") }}
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,31 +1,29 @@
 from flask_wtf import FlaskForm
-from wtforms import EmailField, StringField, PasswordField
+from wtforms import EmailField, StringField, PasswordField, SubmitField
 from wtforms import RadioField, HiddenField, FieldList
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Length
 
 blad1 = 'To pole jest wymagane'
 blad2 = 'Brak zaznaczonej poprawnej odpowiedzi'
-
-
-class UserFormCreate(FlaskForm):
-    email = EmailField('Email:',
-                       validators=[DataRequired(message=blad1)])
-    nick = StringField('Nick:',
-                       validators=[DataRequired(message=blad1)])
-    haslo = PasswordField('Hasło:',
-                          validators=[DataRequired(message=blad1)])
-
 
 class UserFormLogin(FlaskForm):
     email = EmailField('Email:',
                        validators=[DataRequired(message=blad1)])
     haslo = PasswordField('Hasło:',
                           validators=[DataRequired(message=blad1)])
+    submit = SubmitField(label='Zaloguj')
+
+
+class UserFormCreate(UserFormLogin):
+    nick = StringField('Nick:',
+                       validators=[DataRequired(message=blad1)])
+    submit = SubmitField(label='Utwórz konto')
 
 
 class KategoriaForm(FlaskForm):
     kategoria = StringField('Nazwa kategorii:',
-                            validators=[DataRequired(message=blad1)])
+                            validators=[DataRequired(message=blad1), Length(min=3, max=25)])
+    submit = SubmitField(label='Zapisz')
 
 
 class PytanieForm(FlaskForm):
