@@ -20,9 +20,10 @@ class ListView(View):
     def dispatch_request(self):
         # items = self.model.query.all()
         if self.is_logged:
-            items = db.session.execute(db.select(self.model).where(self.model.user_id == current_user.id)).scalars()
+            items = db.session.execute(db.select(self.model).where(self.model.user_id == current_user.id)).scalars().all()
         else:
-            items = db.session.execute(db.select(self.model)).scalars()
+            items = db.session.execute(db.select(self.model)).scalars().all()
+        print(items)
         if not items:
             flash('Brak danych!', 'info')
         return render_template(self.template, items=items, tytul=self.tytul)

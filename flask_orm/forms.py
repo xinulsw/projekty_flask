@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import EmailField, StringField, PasswordField, SubmitField
-from wtforms import RadioField, HiddenField, FieldList
+from wtforms import RadioField, HiddenField, FieldList, SelectField
 from wtforms.validators import DataRequired, Length
 
 blad1 = 'To pole jest wymagane'
@@ -24,7 +24,7 @@ class KategoriaForm(FlaskForm):
     kategoria = StringField('Nazwa kategorii:',
                             validators=[DataRequired(message=blad1), Length(min=3, max=25)])
     submit = SubmitField(label='Zapisz')
-
+    delete = SubmitField('Usuń')
 
 class PytanieForm(FlaskForm):
     pytanie = StringField('Treść pytania:',
@@ -39,5 +39,6 @@ class PytanieForm(FlaskForm):
         validators=[DataRequired(message=blad2)],
         choices=[('0', 'o0'), ('1', 'o1'), ('2', 'o2')]
     )
-
+    kategoria_id = SelectField('Kategoria', coerce=int)
+    submit = SubmitField(label='Zapisz')
     pid = HiddenField("Pytanie id")

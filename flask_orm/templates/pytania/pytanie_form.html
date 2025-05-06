@@ -1,12 +1,40 @@
-  <form method="POST">
+<div class="column is-5 is-offset-4">
+    <h3 class="subtitle">Dodaj pytanie</h3>
+    <div class="box">
+{% include "form_errors.html" %}
+  <form method="POST" class="form-inline">
     {{ form.csrf_token }}
-    {{ form.pytanie.label }}<br>
-    {{ form.pytanie(class="form-control") }}<br>
-    <label>Podaj odpowiedzi i zaznacz poprawną:</label>
-    <ol>
-    {% for o in form.odpowiedzi %}
-      <li>{{ radio[loop.index0] }} {{ o(class="form-control") }}</li>
-    {% endfor %}
-    </ol>
-    <button type="submit" class="btn btn-default">Zapisz pytanie</button>
-  </form>
+    <div class="field">
+        <div class="control">
+        {{ form.pytanie.label(class="label") }}
+        {{ form.pytanie(class="input") }}
+       </div>
+    </div>
+    <div class="field">
+        <label class="label">Podaj odpowiedzi i zaznacz poprawną:</label>
+        <div class="control">
+        <ol>
+        {% for o in form.odpowiedzi %}
+          <li class="is-flex is-align-items-baseline">
+              <label class="radio">
+              {{ radio[loop.index0] }}
+              </label>&nbsp;
+              {{ o(class="input") }}
+          </li>
+        {% endfor %}
+        </ol>
+       </div>
+    </div>
+    <div class="field">
+        {{ form.kategoria_id.label(class="label") }}
+        <div class="control">
+            <div class="select">
+            {{ form.kategoria_id }}
+            </div>
+       </div>
+    </div>
+
+    {{ form.submit(class="button is-block is-info is-fullwidth mt-3") }}
+</form>
+    </div>
+</div>

@@ -7,18 +7,16 @@
 <div class="columns">
   <div class="column is-four-fifths">
   <h2 class="subtitle">Lista kategorii</h2>
-    {% if items %}
     <ol>
-      {% for k in items %}
+      {% for obj in items %}
         <li class="my-3">
           <!-- wypisujemy kategorie -->
-          {{ k.kategoria }}
-          <a href="{{ url_for('kategorie.kategoria_edytuj', id=k.id ) }}" class="button is-link is-small">Edytuj</a>
-          <a href="{{ url_for('kategorie.kategoria_usun', id=k.id ) }}" class="button is-link is-small">Usuń</a>
+          {{ obj.kategoria }}
+          <a href="{{ url_for('kategorie.kategoria_edytuj', id=obj.id ) }}" class="button is-link is-small">Edytuj</a>
+          <a href="{{ url_for('kategorie.kategoria_usun', id=obj.id ) }}" class="button is-link is-small">Usuń</a>
         </li>
       {% endfor %}
     </ol>
-    {% else %}
   </div>
 
 {% set nawigacja = [

@@ -1,8 +1,10 @@
 from flask import (
     Blueprint, flash, render_template, request, redirect, url_for
 )
+from flask_login import current_user, login_required
+
 from .db import db
-from .models import Pytanie, Odpowiedz
+from .models import Pytanie, Odpowiedz, Kategoria
 from .forms import PytanieForm
 
 bp = Blueprint('pytania', __name__, template_folder='pytania')
@@ -11,15 +13,15 @@ bp = Blueprint('pytania', __name__, template_folder='pytania')
 def index():
     return render_template('pytania/index.html')
 
-@bp.route('/pytania/lista')
-def pytania_lista():
-    """Pobranie z bazy i wyświetlenie wszystkich pytań"""
-    pytania = db.session.execute(db.select(Pytanie)).scalars()
-    if not pytania:
-        flash('Brak pytań!', 'kom')
-        return redirect(url_for('pytania.index'))
-
-    return render_template('pytania/pytania_lista.html', pytania=pytania)
+# @bp.route('/pytania/lista')
+# def pytania_lista():
+#     """Pobranie z bazy i wyświetlenie wszystkich pytań"""
+#     pytania = db.session.execute(db.select(Pytanie)).scalars()
+#     if not pytania:
+#         flash('Brak pytań!', 'kom')
+#         return redirect(url_for('pytania.index'))
+#
+#     return render_template('pytania/pytania_lista.html', pytania=pytania)
 
 @bp.route('/pytania/test', methods=['GET', 'POST'])
 def pytania():
@@ -53,7 +55,8 @@ def flash_errors(form):
                 getattr(form, field).label.text))
 
 @bp.route('/dodaj', methods=['GET', 'POST'])
-def dodaj_pytanie():
+@login_required
+def pytanie_dodaj():
     """Dodawanie pytań i odpowiedzi"""
     form = PytanieForm()
     if form.validate_on_submit():
@@ -69,6 +72,8 @@ def dodaj_pytanie():
         return redirect(url_for("pytania.lista"))
     elif request.method == 'POST':
         flash_errors(form)
+    kategorie = db.session.execute(db.select(Kategoria).where(Kategoria.user_id == current_user.id)).scalars().all()
+    form.kategoria_id.choices = [(k.id, k.kategoria) for k in kategorie]
     return render_template("pytania/pytanie_dodaj.html", form=form, radio=list(form.odpok))
 
 @bp.errorhandler(404)
@@ -77,10 +82,10 @@ def page_not_found(e):
     return render_template('404.html'), 404
 
 
-@bp.route('/edytuj/<int:pid>', methods=['GET', 'POST'])
-def edytuj(pid):
+@bp.route('/edytuj/<int:id>', methods=['GET', 'POST'])
+def pytanie_edytuj(id):
     """Edycja pytania o identyfikatorze pid i odpowiedzi"""
-    p = Pytanie.query.get_or_404(pid)
+    p = db.get_or_404(Pytanie, id)
     form = PytanieForm()
 
     if form.validate_on_submit():
@@ -90,8 +95,8 @@ def edytuj(pid):
         for i, o in enumerate(p.odpowiedzi):
             o.odpowiedz = odp[i]
         db.session.commit()
-        flash("Zaktualizowano pytanie: {}".format(form.pytanie.data))
-        return redirect(url_for("pytania.lista"))
+        flash(f"Zaktualizowano pytanie: {form.pytanie.data}")
+        return redirect(url_for("pytania_lista"))
     elif request.method == 'POST':
         flash_errors(form)
 
@@ -103,10 +108,10 @@ def edytuj(pid):
     return render_template("pytania/pytanie_edytuj.html", form=form, radio=list(form.odpok))
 
 
-@bp.route('/usun/<int:pid>', methods=['GET', 'POST'])
-def usun(pid):
+@bp.route('/usun/<int:id>', methods=['GET', 'POST'])
+def pytanie_usun(id):
     """Usunięcie pytania o identyfikatorze pid"""
-    p = Pytanie.query.get_or_404(pid)
+    p = db.get_or_404(Pytanie, id)
     if request.method == 'POST':
         db.session.delete(p)
         db.session.commit()

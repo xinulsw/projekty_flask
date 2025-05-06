@@ -3,16 +3,28 @@
 {% set active_page = "pytania" %}
 {% block h1 %} Pytania {% endblock %}
 {% block body %}
-    <nav class="tabs">
-      <div class="container">
-        <ul>
-          <li class="is-active">
-              <a href="{{ url_for('pytania.pytania_lista') }}">Pytania »</a>
-          </li>
-          <li class="is-active">
-              <a href="{{ url_for('pytania.pytania') }}">Quiz »</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+
+<div class="columns">
+  <div class="column is-four-fifths">
+  <h2 class="subtitle">Lista pytań</h2>
+    <ol>
+      {% for obj in items %}
+        <li class="my-3">
+          <!-- wypisujemy kategorie -->
+          {{ obj.pytanie }}
+          <a href="{{ url_for('pytania.pytanie_edytuj', id=obj.id ) }}" class="button is-link is-small">Edytuj</a>
+          <a href="{{ url_for('pytania.pytanie_usun', id=obj.id ) }}" class="button is-link is-small">Usuń</a>
+        </li>
+      {% endfor %}
+    </ol>
+  </div>
+  <div class="column">
+    <aside class="menu">
+    <p class="menu-label">Pytania</p>
+    <ul class="menu-list">
+      <li><a href="{{ url_for('pytania.pytanie_dodaj') }}">Dodaj pytanie »</a></li>
+    </ul>
+    </aside>
+  </div>
+</div>
 {% endblock %}

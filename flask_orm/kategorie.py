@@ -8,15 +8,6 @@ from .forms import KategoriaForm
 
 bp = Blueprint('kategorie', __name__, template_folder='kategorie')
 
-# @bp.route('/')
-# def index():
-#     kategorie = Kategoria.query.all()
-#     if not kategorie:
-#         flash('Brak kategorii!', 'kom')
-#         return redirect(url_for('kategorie.index'))
-#
-#     return render_template('kategorie/index.html', kategorie=kategorie)
-
 @bp.route('/dodaj', methods=['GET', 'POST'])
 @login_required
 def kategoria_dodaj():
@@ -48,5 +39,18 @@ def kategoria_edytuj(id):
 def kategoria_usun(id):
     kat = db.session.execute(db.select(Kategoria).filter_by(id=id)).scalar_one()
     form = KategoriaForm(request.form, obj=kat)
-
+    if form.delete.data:
+        db.session.delete(kat)
+        db.session.commit()
+        flash(f'Usunięto kategorię {form.kategoria.data}', 'sukces')
+        return redirect(url_for('kategorie_lista'))
     return render_template('kategorie/kategoria_usun.html', form=form)
+
+# @bp.route('/')
+# def index():
+#     kategorie = Kategoria.query.all()
+#     if not kategorie:
+#         flash('Brak kategorii!', 'kom')
+#         return redirect(url_for('kategorie.index'))
+#
+#     return render_template('kategorie/index.html', kategorie=kategorie)
