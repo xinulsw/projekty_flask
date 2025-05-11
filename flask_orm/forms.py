@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import EmailField, StringField, PasswordField, SubmitField
-from wtforms import RadioField, HiddenField, FieldList, SelectField
+from wtforms import BooleanField, SelectMultipleField, FieldList, SelectField
+from wtforms import widgets
 from wtforms.validators import DataRequired, Length
 
 blad1 = 'To pole jest wymagane'
@@ -26,20 +27,33 @@ class KategoriaForm(FlaskForm):
     submit = SubmitField(label='Zapisz')
     delete = SubmitField('Usuń')
 
+class OdpowiedzForm(FlaskForm):
+    odpowiedz = StringField('Odpowiedź', validators=[DataRequired(message=blad1)])
+    poprawna = BooleanField()
+
+class MultiCheckboxField(SelectMultipleField):
+    """
+    A multiple-select, except displays a list of checkboxes.
+
+    Iterating the field will produce subfields, allowing custom rendering of
+    the enclosed checkbox fields.
+    """
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput()
+
 class PytanieForm(FlaskForm):
-    pytanie = StringField('Treść pytania:',
-                          validators=[DataRequired(message=blad1)])
+    pytanie = StringField('Treść pytania:', validators=[DataRequired(message=blad1)])
     odpowiedzi = FieldList(StringField(
         'Odpowiedź',
         validators=[DataRequired(message=blad1)]),
         min_entries=3,
         max_entries=3)
-    odpok = RadioField(
-        'Poprawna odpowiedź',
+    odpok = SelectMultipleField(
+        'Odpowiedź',
         coerce=int,
-        validators=[DataRequired(message=blad2)],
-        choices=[('1', 'o0'), ('2', 'o1'), ('3', 'o2')]
+        choices=[('1', 'o0'), ('2', 'o1'), ('3', 'o2')],
+        widget=widgets.ListWidget(prefix_label=False),
+        option_widget=widgets.CheckboxInput()
     )
     kategoria_id = SelectField('Kategoria', coerce=int)
     submit = SubmitField(label='Zapisz')
-    pid = HiddenField("Pytanie id")

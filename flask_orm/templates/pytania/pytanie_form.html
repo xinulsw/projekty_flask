@@ -13,16 +13,17 @@
     <div class="field">
         <label class="label">Podaj odpowiedzi i zaznacz poprawną:</label>
         <div class="control">
-        <ol>
-        {% for o in form.odpowiedzi %}
-          <li class="is-flex is-align-items-baseline">
-              <label class="radio">
-              {{ radio[loop.index0] }}
-              </label>&nbsp;
-              {{ o(class="input") }}
-          </li>
-        {% endfor %}
-        </ol>
+            {{ form.odpok }}
+<!--        <ol>-->
+<!--        {% for o in form.odpowiedzi %}-->
+<!--          <li class="is-flex is-align-items-baseline">-->
+<!--              <label class="radio">-->
+<!--              {{ radio[loop.index0] }}-->
+<!--              </label>&nbsp;-->
+<!--              {{ o(class="input") }}-->
+<!--          </li>-->
+<!--        {% endfor %}-->
+<!--        </ol>-->
        </div>
     </div>
     <div class="field">

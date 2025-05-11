@@ -1,5 +1,5 @@
 from typing import List
-from sqlalchemy import Integer, String, ForeignKey, event
+from sqlalchemy import Integer, String, Boolean, ForeignKey, event
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from flask_login import UserMixin
 from .db import db
@@ -48,7 +48,6 @@ class Kategoria(db.Model):
 class Pytanie(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     pytanie: Mapped[str] = mapped_column(String(255), unique=True)
-    odpok: Mapped[str] = mapped_column(String(100))
     odpowiedzi: Mapped[List['Odpowiedz']] = relationship(
         'Odpowiedz', back_populates='pytanie',
         cascade='all, delete-orphan')
@@ -66,6 +65,7 @@ class Odpowiedz(db.Model):
     pytanie_id: Mapped[int] = mapped_column(ForeignKey('pytanie.id', ondelete='CASCADE'))
     pytanie: Mapped['Pytanie'] = relationship(back_populates='odpowiedzi')
     odpowiedz: Mapped[str] = mapped_column(String(100))
+    poprawna: Mapped[bool] = mapped_column(Boolean, default=False)
 
     def __repr__(self):
         return self.odpowiedz
