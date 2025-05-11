@@ -20,7 +20,7 @@ def kategoria_dodaj():
         db.session.commit()
         return redirect(url_for('kategorie_lista'))
 
-    return render_template('kategorie/kategoria_dodaj.html', form=form)
+    return render_template('kategorie/kategoria_dodaj.html', form=form, subtitle='Dodaj kategorię')
 
 @bp.route('/edytuj/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -32,7 +32,7 @@ def kategoria_edytuj(id):
         db.session.commit()
         return redirect(url_for('kategorie_lista'))
 
-    return render_template('kategorie/kategoria_edytuj.html', form=form)
+    return render_template('kategorie/kategoria_edytuj.html', form=form, subtitle='Edytuj kategorię')
 
 @bp.route('/usun/<int:id>', methods=['GET', 'POST'])
 @login_required

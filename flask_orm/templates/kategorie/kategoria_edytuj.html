@@ -3,10 +3,5 @@
 {% set active_page = "kategorie" %}
 {% block h1 %} Edytowanie Kategorii {% endblock %}
 {% block body %}
-<div class="column is-4 is-offset-4">
-    <h3 class="title">Edytuj kategorię</h3>
-    <div class="box">
-        {% include "kategorie/kategoria_form.html" %}
-    </div>
-</div>
+    {% include "kategorie/kategoria_form.html" %}
 {% endblock %}

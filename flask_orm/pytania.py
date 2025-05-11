@@ -44,24 +44,34 @@ def pytania():
         return redirect(url_for('index'))
     return render_template('pytania/pytania_pytania.html', pytania=pytania)
 
-def flash_errors(form):
-    """Odczytanie wszystkich błędów formularza i przygotowanie komunikatów"""
-    for field, errors in form.errors.items():
-        for error in errors:
-            if type(error) is list:
-                error = error[0]
-            flash("Błąd: {}. Pole: {}".format(
-                error,
-                getattr(form, field).label.text))
+# def flash_errors(form):
+#     """Odczytanie wszystkich błędów formularza i przygotowanie komunikatów"""
+#     for field, errors in form.errors.items():
+#         for error in errors:
+#             if type(error) is list:
+#                 error = error[0]
+#             flash("Błąd: {}. Pole: {}".format(
+#                 error,
+#                 getattr(form, field).label.text))
 
 @bp.route('/dodaj', methods=['GET', 'POST'])
 @login_required
 def pytanie_dodaj():
     """Dodawanie pytań i odpowiedzi"""
     form = PytanieForm()
+    kategorie = db.session.execute(db.select(Kategoria).where(Kategoria.user_id == current_user.id)).scalars().all()
+    form.kategoria_id.choices = [(k.id, k.kategoria) for k in kategorie]
+    print(form.data)
+    # if request.method == 'POST':
+    #     print(form.data)
+    # el
     if form.validate_on_submit():
+        pytanie = form.pytanie.data
         odpowiedzi = form.odpowiedzi.data
-        p = Pytanie(pytanie=form.pytanie.data, odpok=odpowiedzi[int(form.odpok.data)])
+        odpok = odpowiedzi[form.odpok.data]
+        kategoria_id = form.kategoria_id.data
+        user_id = current_user.id
+        p = Pytanie(pytanie=pytanie, odpok=odpok, kategoria_id=kategoria_id, user_id=user_id)
         db.session.add(p)
         db.session.commit()
         for o in odpowiedzi:
@@ -69,12 +79,11 @@ def pytanie_dodaj():
             db.session.add(odp)
         db.session.commit()
         flash(f'Dodano pytanie: {form.pytanie.data}')
-        return redirect(url_for("pytania.lista"))
-    elif request.method == 'POST':
-        flash_errors(form)
-    kategorie = db.session.execute(db.select(Kategoria).where(Kategoria.user_id == current_user.id)).scalars().all()
-    form.kategoria_id.choices = [(k.id, k.kategoria) for k in kategorie]
-    return render_template("pytania/pytanie_dodaj.html", form=form, radio=list(form.odpok))
+        return redirect(url_for('pytania_lista'))
+    # elif request.method == 'POST':
+    #     flash_errors(form)
+    print(list(form.odpok))
+    return render_template('pytania/pytanie_dodaj.html', form=form, radio=list(form.odpok))
 
 @bp.errorhandler(404)
 def page_not_found(e):
@@ -86,25 +95,32 @@ def page_not_found(e):
 def pytanie_edytuj(id):
     """Edycja pytania o identyfikatorze pid i odpowiedzi"""
     p = db.get_or_404(Pytanie, id)
-    form = PytanieForm()
+    form = PytanieForm(request.form, obj=p)
+    kategorie = db.session.execute(db.select(Kategoria).where(Kategoria.user_id == current_user.id)).scalars().all()
+    form.kategoria_id.choices = [(k.id, k.kategoria) for k in kategorie]
+    form.kategoria_id.data = p.kategoria_id
 
+    # if request.method == 'POST':
+    #     print(form.data)
+    # el
     if form.validate_on_submit():
         odp = form.odpowiedzi.data
-        p.pytanie = form.pytanie.data
-        p.odpok = odp[int(form.odpok.data)]
+        # p.pytanie = form.pytanie.data
+        form.odpok.data = odp[int(form.odpok.data)-1]
+        print(form.data)
+        form.populate_obj(p)
         for i, o in enumerate(p.odpowiedzi):
             o.odpowiedz = odp[i]
         db.session.commit()
         flash(f"Zaktualizowano pytanie: {form.pytanie.data}")
         return redirect(url_for("pytania_lista"))
-    elif request.method == 'POST':
-        flash_errors(form)
+    # elif request.method == 'POST':
+    #     flash_errors(form)
 
     for i in range(3):
         if p.odpok == p.odpowiedzi[i].odpowiedz:
-            p.odpok = i
+            form.odpok.data = i
             break
-    form = PytanieForm(obj=p)
     return render_template("pytania/pytanie_edytuj.html", form=form, radio=list(form.odpok))
 
 

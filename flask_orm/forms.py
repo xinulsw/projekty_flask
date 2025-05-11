@@ -36,8 +36,9 @@ class PytanieForm(FlaskForm):
         max_entries=3)
     odpok = RadioField(
         'Poprawna odpowiedź',
+        coerce=int,
         validators=[DataRequired(message=blad2)],
-        choices=[('0', 'o0'), ('1', 'o1'), ('2', 'o2')]
+        choices=[('1', 'o0'), ('2', 'o1'), ('3', 'o2')]
     )
     kategoria_id = SelectField('Kategoria', coerce=int)
     submit = SubmitField(label='Zapisz')

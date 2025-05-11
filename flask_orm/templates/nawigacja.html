@@ -1,12 +1,14 @@
-{% set nawigacja = [
+{% set nawigacja_1 = [
   ('kategorie_lista', 'kategorie', 'Kategorie', 'tak'),
   ('pytania_lista', 'pytania', 'Pytania', 'tak'),
   ('users.dodaj', 'dodaj', 'Utwórz konto', 'nie'),
   ('users.loguj', 'loguj', 'Zaloguj się', 'nie'),
+] %}
+{% set nawigacja_2 = [
+
   ('users.wyloguj', 'dodaj', 'Wyloguj się', 'tak'),
   ('users.usun', 'usun', 'Usuń konto', 'tak'),
 ] %}
-
 {% set active_page = active_page|default('index') %}
 
   <div class="hero-head">
@@ -28,7 +30,7 @@
             <a class="navbar-item{% if 'index' == active_page %} is-active{% endif %}" href="{{ url_for('index') }}">
               Strona główna
             </a>
-            {% for href, id, tekst, zalogowany in nawigacja %}
+            {% for href, id, tekst, zalogowany in nawigacja_1 %}
               {% if not current_user.is_authenticated %}
                 {% if zalogowany == 'nie' %}
                 <a class="navbar-item{% if id == active_page %} is-active{% endif %}" href="{{ url_for(href) }}">
@@ -36,20 +38,36 @@
                 </a>
                 {% endif %}
               {% endif %}
-            {% endfor %}
-            {% if current_user.is_authenticated %}
-              {% for href, id, tekst, zalogowany in nawigacja %}
+              {% if current_user.is_authenticated %}
                 {% if zalogowany == 'tak' %}
                 <a class="navbar-item{% if id == active_page %} is-active{% endif %}" href="{{ url_for(href) }}">
                   {{ tekst|e }}
                 </a>
                 {% endif %}
-              {% endfor %}
+              {% endif %}
+            {% endfor %}
+            {% if current_user.is_authenticated %}
+            <div class="navbar-item has-dropdown is-hoverable">
               <span class="navbar-item">
-                <a class="button is-primary is-inverted">
+              <a class="button is-primary is-inverted">
                   <span>Użytkownik: {{ current_user.nick }}</span>
-                </a>
+              </a>
               </span>
+              <div class="navbar-dropdown">
+              {% for href, id, tekst, zalogowany in nawigacja_2 %}
+                {% if zalogowany == 'tak' %}
+                <a class="navbar-item{% if id == active_page %} is-selected{% endif %}" href="{{ url_for(href) }}">
+                  {{ tekst|e }}
+                </a>
+                {% endif %}
+              {% endfor %}
+              </div>
+            </div>
+<!--              <span class="navbar-item">-->
+<!--                <a class="button is-primary is-inverted">-->
+<!--                  <span>Użytkownik: {{ current_user.nick }}</span>-->
+<!--                </a>-->
+<!--              </span>-->
             {% endif %}
           </div>
         </div>
