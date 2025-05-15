@@ -11,19 +11,16 @@
        </div>
     </div>
     <div class="field">
-        <label class="label">Podaj odpowiedzi i zaznacz poprawną:</label>
+        <label class="label">Podaj odpowiedzi i zaznacz poprawną(e):</label>
         <div class="control">
-            {{ form.odpok }}
-<!--        <ol>-->
-<!--        {% for o in form.odpowiedzi %}-->
-<!--          <li class="is-flex is-align-items-baseline">-->
-<!--              <label class="radio">-->
-<!--              {{ radio[loop.index0] }}-->
-<!--              </label>&nbsp;-->
-<!--              {{ o(class="input") }}-->
-<!--          </li>-->
-<!--        {% endfor %}-->
-<!--        </ol>-->
+
+          {% for o in form.odpowiedzi %}
+            {{ o.csrf_token }}
+            <label class="checkbox">
+              Poprawna: {{ o.poprawna(class="checkbox mb-2") }}
+            </label>
+            {{ o.odpowiedz(class="input mt-2") }}
+          {% endfor %}
        </div>
     </div>
     <div class="field">
@@ -34,7 +31,6 @@
             </div>
        </div>
     </div>
-
     {{ form.submit(class="button is-block is-info is-fullwidth mt-3") }}
 </form>
     </div>

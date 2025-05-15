@@ -28,8 +28,11 @@ class User(UserMixin, db.Model):
 
 @event.listens_for(User.__table__, 'after_create')
 def create_user(*args, **kwargs):
-    db.session.add(User(email="adam@home.net", nick='adam',
-                        haslo='scrypt:32768:8:1$b6ySf4OhUqADg4os$9fab79b9175c7e1ac341d06b72a3bb3e3a213733c6211bfa7f2b388988065e837df630be38e7eb5729d59db4f5e7d0abd7886e0697125f1a0e8a0eadd6a9eb3a'))
+    u1 = User(email="anonim@home.net", nick='anonim', haslo='')
+    u2 = User(email="adam@home.net", nick='adam',
+                        haslo='scrypt:32768:8:1$b6ySf4OhUqADg4os$9fab79b9175c7e1ac341d06b72a3bb3e3a213733c6211bfa7f2b388988065e837df630be38e7eb5729d59db4f5e7d0abd7886e0697125f1a0e8a0eadd6a9eb3a')
+    db.session.add(u1)
+    db.session.add(u2)
     db.session.commit()
 
 
@@ -45,16 +48,23 @@ class Kategoria(db.Model):
         return self.kategoria
 
 
+@event.listens_for(Kategoria.__table__, 'after_create')
+def create_user(*args, **kwargs):
+    k = Kategoria(kategoria="brak", user_id=1)
+    db.session.add(k)
+    db.session.commit()
+
+
 class Pytanie(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     pytanie: Mapped[str] = mapped_column(String(255), unique=True)
+    kategoria_id: Mapped[int] = mapped_column(ForeignKey('kategoria.id', onupdate='CASCADE', ondelete='SET NULL'))
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id', onupdate='CASCADE', ondelete='SET NULL'))
+    kategoria: Mapped['Kategoria'] = relationship(back_populates='pytania')
+    user: Mapped['User'] = relationship(back_populates='pytania')
     odpowiedzi: Mapped[List['Odpowiedz']] = relationship(
         'Odpowiedz', back_populates='pytanie',
         cascade='all, delete-orphan')
-    kategoria_id: Mapped[int] = mapped_column(ForeignKey('kategoria.id', onupdate='CASCADE', ondelete='SET NULL'))
-    kategoria: Mapped['Kategoria'] = relationship(back_populates='pytania')
-    user_id: Mapped[int] = mapped_column(ForeignKey('user.id', onupdate='CASCADE', ondelete='SET NULL'))
-    user: Mapped['User'] = relationship(back_populates='pytania')
 
     def __repr__(self):
         return self.pytanie
@@ -63,9 +73,9 @@ class Pytanie(db.Model):
 class Odpowiedz(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     pytanie_id: Mapped[int] = mapped_column(ForeignKey('pytanie.id', ondelete='CASCADE'))
-    pytanie: Mapped['Pytanie'] = relationship(back_populates='odpowiedzi')
     odpowiedz: Mapped[str] = mapped_column(String(100))
     poprawna: Mapped[bool] = mapped_column(Boolean, default=False)
+    pytanie: Mapped['Pytanie'] = relationship(back_populates='odpowiedzi')
 
     def __repr__(self):
-        return self.odpowiedz
+        return f'{self.odpowiedz} ({self.poprawna})'

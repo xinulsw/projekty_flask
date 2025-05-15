@@ -12,8 +12,8 @@
         <li class="my-3">
           <!-- wypisujemy kategorie -->
           {{ obj.pytanie }}
-          <a href="{{ url_for('pytania.pytanie_edytuj', id=obj.id ) }}" class="button is-link is-small">Edytuj</a>
-          <a href="{{ url_for('pytania.pytanie_usun', id=obj.id ) }}" class="button is-link is-small">Usuń</a>
+          <a href="{{ url_for('pytania.pytanie_edytuj', pid=obj.id ) }}" class="button is-link is-small">Edytuj</a>
+          <a href="{{ url_for('pytania.pytanie_usun', pid=obj.id ) }}" class="button is-link is-small">Usuń</a>
         </li>
       {% endfor %}
     </ol>

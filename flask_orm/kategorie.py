@@ -2,6 +2,8 @@ from flask import (
     Blueprint, flash, render_template, request, redirect, url_for
 )
 from flask_login import login_required, current_user
+from sqlalchemy import or_
+
 from .db import db
 from .models import User, Kategoria
 from .forms import KategoriaForm
@@ -46,11 +48,9 @@ def kategoria_usun(id):
         return redirect(url_for('kategorie_lista'))
     return render_template('kategorie/kategoria_usun.html', form=form)
 
-# @bp.route('/')
-# def index():
-#     kategorie = Kategoria.query.all()
-#     if not kategorie:
-#         flash('Brak kategorii!', 'kom')
-#         return redirect(url_for('kategorie.index'))
-#
-#     return render_template('kategorie/index.html', kategorie=kategorie)
+def get_kategorie_user(user_id):
+    kategorie = db.session.execute(
+        db.select(Kategoria).where(
+            or_(Kategoria.user_id == 1, Kategoria.user_id == user_id)
+        )).scalars().all()
+    return kategorie
