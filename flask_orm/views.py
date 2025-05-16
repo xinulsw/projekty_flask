@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, flash, render_template, request, redirect, url_for, current_app
+    Blueprint, flash, render_template
 )
 from flask_login import login_required, current_user
 from flask.views import View
@@ -15,7 +15,7 @@ class ListView(View):
         self.model = model
         self.template = template
         self.tytul = tytul
-        self.is_logged=True
+        self.is_logged=is_logged
 
     def dispatch_request(self):
         # items = self.model.query.all()
@@ -23,7 +23,7 @@ class ListView(View):
             items = db.session.execute(db.select(self.model).where(self.model.user_id == current_user.id)).scalars().all()
         else:
             items = db.session.execute(db.select(self.model)).scalars().all()
-        print(items)
+        print('Lista obiektów:', items)
         if not items:
             flash('Brak danych!', 'info')
         return render_template(self.template, items=items, tytul=self.tytul)
