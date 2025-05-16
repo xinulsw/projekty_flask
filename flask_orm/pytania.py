@@ -2,8 +2,6 @@ from flask import (
     Blueprint, flash, render_template, request, redirect, url_for
 )
 from flask_login import current_user, login_required
-from sqlalchemy import or_
-
 from .db import db
 from .kategorie import get_kategorie_user
 from .models import Pytanie, Odpowiedz, Kategoria
@@ -15,32 +13,12 @@ bp = Blueprint('pytania', __name__, template_folder='pytania')
 def index():
     return render_template('pytania/index.html')
 
-# @bp.route('/pytania/lista')
-# def pytania_lista():
-#     """Pobranie z bazy i wyświetlenie wszystkich pytań"""
-#     pytania = db.session.execute(db.select(Pytanie)).scalars()
-#     if not pytania:
-#         flash('Brak pytań!', 'kom')
-#         return redirect(url_for('pytania.index'))
-#
-#     return render_template('pytania/pytania_lista.html', pytania=pytania)
-
-# def flash_errors(form):
-#     """Odczytanie wszystkich błędów formularza i przygotowanie komunikatów"""
-#     for field, errors in form.errors.items():
-#         for error in errors:
-#             if type(error) is list:
-#                 error = error[0]
-#             flash("Błąd: {}. Pole: {}".format(
-#                 error,
-#                 getattr(form, field).label.text))
-
 @bp.route('/dodaj', methods=['GET', 'POST'])
 @login_required
 def pytanie_dodaj():
     """Dodawanie pytań i odpowiedzi"""
     form = PytanieForm()
-    kategorie = get_kategorie_user(current_user.id)
+    kategorie = get_kategorie_user()
     form.kategoria_id.choices = [(k.id, k.kategoria) for k in kategorie]
 
     if request.method == 'POST' and form.validate_on_submit():
@@ -98,7 +76,7 @@ def pytanie_usun(pid):
 
 
 @bp.route('/pytania/test', methods=['GET', 'POST'])
-def pytania():
+def test():
     """Wyświetlenie pytań i odpowiedzi w testu oraz ocena poprawności
     przesłanych odpowiedzi"""
 
@@ -112,8 +90,7 @@ def pytania():
         return redirect(url_for('pytania.index'))
 
     # GET, wyświetl pytania i odpowiedzi
-    lista_pytan = Pytanie.query.join(Odpowiedz).all()
-    if not lista_pytan:
-        flash('Brak pytań w bazie.', 'kom')
-        return redirect(url_for('index'))
-    return render_template('pytania/pytania_pytania.html', pytania=pytania)
+    # lista_pytan = Pytanie.query.join(Odpowiedz).all()
+    wszystkie_pytania = db.session.execute(db.select(Pytanie)).scalars().all()
+    print(wszystkie_pytania)
+    return render_template('pytania/pytania_test.html')

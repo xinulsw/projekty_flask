@@ -31,7 +31,11 @@ def create_app():
 
     app.add_url_rule(
         '/kategorie/',
-        view_func=ListView.as_view('kategorie_lista', Kategoria, 'kategorie/index.html', 'Lista kategorii'),
+        view_func=ListView.as_view(
+            'kategorie_lista',
+            Kategoria,
+            'kategorie/index.html',
+            'Lista kategorii', False),
     )
 
     from . import kategorie

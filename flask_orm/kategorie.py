@@ -3,6 +3,7 @@ from flask import (
 )
 from flask_login import login_required, current_user
 from sqlalchemy import or_
+from sqlalchemy.exc import IntegrityError
 
 from .db import db
 from .models import User, Kategoria
@@ -15,12 +16,19 @@ bp = Blueprint('kategorie', __name__, template_folder='kategorie')
 def kategoria_dodaj():
     form = KategoriaForm()
     if form.validate_on_submit():
-        kat = form.kategoria.data
-        user = db.session.execute(db.select(User).filter_by(id=current_user.id)).scalar_one()
-        kategoria = Kategoria(kategoria=kat, user=user)
-        db.session.add(kategoria)
-        db.session.commit()
-        return redirect(url_for('kategorie_lista'))
+        error = False
+        try:
+            kat = form.kategoria.data
+            user = db.session.execute(db.select(User).filter_by(id=current_user.id)).scalar_one()
+            kategoria = Kategoria(kategoria=kat, user=user)
+            db.session.add(kategoria)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            flash('Podana kategoria jest już w bazie!')
+            error = True
+        if not error:
+            return redirect(url_for('kategorie_lista'))
 
     return render_template('kategorie/kategoria_dodaj.html', form=form, subtitle='Dodaj kategorię')
 
@@ -48,9 +56,12 @@ def kategoria_usun(id):
         return redirect(url_for('kategorie_lista'))
     return render_template('kategorie/kategoria_usun.html', form=form)
 
-def get_kategorie_user(user_id):
-    kategorie = db.session.execute(
-        db.select(Kategoria).where(
-            or_(Kategoria.user_id == 1, Kategoria.user_id == user_id)
-        )).scalars().all()
+def get_kategorie_user(user_id=None):
+    if user_id:
+        kategorie = db.session.execute(
+            db.select(Kategoria).where(
+                or_(Kategoria.user_id == 1, Kategoria.user_id == user_id)
+            )).scalars().all()
+    else:
+        kategorie = db.session.execute(db.select(Kategoria)).scalars().all()
     return kategorie

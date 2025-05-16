@@ -12,8 +12,10 @@
         <li class="my-3">
           <!-- wypisujemy kategorie -->
           {{ obj.kategoria }}
-          <a href="{{ url_for('kategorie.kategoria_edytuj', id=obj.id ) }}" class="button is-link is-small">Edytuj</a>
-          <a href="{{ url_for('kategorie.kategoria_usun', id=obj.id ) }}" class="button is-link is-small">Usuń</a>
+          {% if obj.user_id == current_user.id %}
+            <a href="{{ url_for('kategorie.kategoria_edytuj', id=obj.id ) }}" class="button is-link is-small">Edytuj</a>
+            <a href="{{ url_for('kategorie.kategoria_usun', id=obj.id ) }}" class="button is-link is-small">Usuń</a>
+          {% endif %}
         </li>
       {% endfor %}
     </ol>

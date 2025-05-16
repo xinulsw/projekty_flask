@@ -1,3 +1,23 @@
+# @bp.route('/pytania/lista')
+# def pytania_lista():
+#     """Pobranie z bazy i wyświetlenie wszystkich pytań"""
+#     pytania = db.session.execute(db.select(Pytanie)).scalars()
+#     if not pytania:
+#         flash('Brak pytań!', 'kom')
+#         return redirect(url_for('pytania.index'))
+#
+#     return render_template('pytania/pytania_lista.html', pytania=pytania)
+
+# def flash_errors(form):
+#     """Odczytanie wszystkich błędów formularza i przygotowanie komunikatów"""
+#     for field, errors in form.errors.items():
+#         for error in errors:
+#             if type(error) is list:
+#                 error = error[0]
+#             flash("Błąd: {}. Pole: {}".format(
+#                 error,
+#                 getattr(form, field).label.text))
+
 # class PytanieForm(FlaskForm):
 #     pytanie = StringField('Treść pytania:', validators=[DataRequired(message=blad1)])
 #     odpowiedzi = FieldList(StringField(

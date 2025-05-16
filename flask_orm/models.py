@@ -27,7 +27,7 @@ class User(UserMixin, db.Model):
 
 
 @event.listens_for(User.__table__, 'after_create')
-def create_user(*args, **kwargs):
+def dodaj_user(*args, **kwargs):
     u1 = User(email="anonim@home.net", nick='anonim', haslo='')
     u2 = User(email="adam@home.net", nick='adam',
                         haslo='scrypt:32768:8:1$b6ySf4OhUqADg4os$9fab79b9175c7e1ac341d06b72a3bb3e3a213733c6211bfa7f2b388988065e837df630be38e7eb5729d59db4f5e7d0abd7886e0697125f1a0e8a0eadd6a9eb3a')
@@ -49,7 +49,7 @@ class Kategoria(db.Model):
 
 
 @event.listens_for(Kategoria.__table__, 'after_create')
-def create_user(*args, **kwargs):
+def dodaj_kategoria(*args, **kwargs):
     k = Kategoria(kategoria="brak", user_id=1)
     db.session.add(k)
     db.session.commit()
