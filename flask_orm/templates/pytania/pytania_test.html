@@ -4,12 +4,23 @@
 {% block h1 %} Pytania – test {% endblock %}
 {% block body %}
   <!-- pętla odczytująca kolejne pytania z listy -->
-  <ol>
+  <form method="POST" class="form-inline">
   {% for p in pytania %}
-    <li>
       <!-- wypisujemy pytanie -->
-      {{ p }}
-    </li>
+    {% set p_nr = loop.index0 %}
+    {{ p }}
+    {% for o in odpowiedzi[p_nr] %}
+      {% set o_nr = loop.index0 %}
+      <label>
+        {% if p.l_poprawnych_odp > 1 %}
+          <input type="checkbox" name="{{ p_nr }}{{ o_nr }}">
+        {% else %}
+          <input type="radio" value="{{ o.id }}" name="{{ pnr }}">
+        {% endif %}
+        {{ o.odpowiedz }}
+      </label>
+    {% endfor %}
   {% endfor %}
-  </ol>
+  </form>
+
 {% endblock %}

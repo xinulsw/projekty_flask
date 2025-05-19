@@ -1,8 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import EmailField, StringField, PasswordField, SubmitField, FormField
+from pygments.lexer import default
+from wtforms import EmailField, StringField, PasswordField, SubmitField, FormField, HiddenField, IntegerField
 from wtforms import BooleanField, SelectMultipleField, FieldList, SelectField
 from wtforms import widgets
 from wtforms.validators import DataRequired, Length, ValidationError
+from wtforms.widgets import HiddenInput
 
 blad1 = 'To pole jest wymagane!'
 blad2 = 'Brak zaznaczonej poprawnej odpowiedzi!'
@@ -33,6 +35,7 @@ class OdpowiedzForm(FlaskForm):
 
 class PytanieForm(FlaskForm):
     pytanie = StringField('Treść pytania:', validators=[DataRequired(message=blad1)])
+    l_poprawnych_odp = IntegerField(widget=HiddenInput())
     odpowiedzi = FieldList(FormField(OdpowiedzForm), min_entries=3)
     kategoria_id = SelectField('Kategoria', coerce=int)
     submit = SubmitField(label='Zapisz')
@@ -43,10 +46,11 @@ class PytanieForm(FlaskForm):
         :param field: lista formularzy odpowiedzi
         :return: wyjątek walidacji
         """
-        validate = True
+        l_poprawnych_odp = 0
+        print(field.data)
         for o in field.data:
             if o['poprawna']:
-                validate = False
-                break
-        if validate:
+                l_poprawnych_odp += 1
+        if not l_poprawnych_odp:
             raise ValidationError('Przynajmniej jedna odpowiedź musi być poprawna!')
+        self.l_poprawnych_odp.data = l_poprawnych_odp

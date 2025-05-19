@@ -1,7 +1,11 @@
 from typing import List
+
+from peewee import IntegerField
 from sqlalchemy import Integer, String, Boolean, ForeignKey, event
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from flask_login import UserMixin
+from wtforms import SelectMultipleField, widgets, HiddenField, RadioField
+
 from .db import db
 
 
@@ -58,9 +62,10 @@ def dodaj_kategoria(*args, **kwargs):
 class Pytanie(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     pytanie: Mapped[str] = mapped_column(String(255), unique=True)
+    l_poprawnych_odp: Mapped[int] = mapped_column(Integer, default=1)
     kategoria_id: Mapped[int] = mapped_column(ForeignKey('kategoria.id', onupdate='CASCADE', ondelete='SET NULL'))
-    user_id: Mapped[int] = mapped_column(ForeignKey('user.id', onupdate='CASCADE', ondelete='SET NULL'))
     kategoria: Mapped['Kategoria'] = relationship(back_populates='pytania')
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id', onupdate='CASCADE', ondelete='SET NULL'))
     user: Mapped['User'] = relationship(back_populates='pytania')
     odpowiedzi: Mapped[List['Odpowiedz']] = relationship(
         'Odpowiedz', back_populates='pytanie',
@@ -79,3 +84,21 @@ class Odpowiedz(db.Model):
 
     def __repr__(self):
         return f'{self.odpowiedz} ({self.poprawna})'
+
+# class MultiCheckboxField(SelectMultipleField):
+#     """
+#     A multiple-select, except displays a list of checkboxes.
+#
+#     Iterating the field will produce subfields, allowing custom rendering of
+#     the enclosed checkbox fields.
+#     """
+#     widget = widgets.ListWidget(prefix_label=False)
+#     option_widget = widgets.CheckboxInput()
+#
+# class OdpowiedziCheckbox(db.Model):
+#     p_id = HiddenField()
+#     odpowiedzi = MultiCheckboxField('Zaznacz poprawne odpowiedzi:')
+#
+# class OdpowiedziRadio(db.Model):
+#     p_id = HiddenField()
+#     odpowiedzi = RadioField('Wybierz poprawną odpowiedź:')

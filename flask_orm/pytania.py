@@ -23,10 +23,11 @@ def pytanie_dodaj():
 
     if request.method == 'POST' and form.validate_on_submit():
         pytanie = form.pytanie.data
+        l_poprawnych_odp = form.l_poprawnych_odp.data
         odpowiedzi = form.odpowiedzi.data
         kategoria_id = form.kategoria_id.data
         user_id = current_user.id
-        p = Pytanie(pytanie=pytanie, kategoria_id=kategoria_id, user_id=user_id)
+        p = Pytanie(pytanie=pytanie, l_poprawnych_odp=l_poprawnych_odp, kategoria_id=kategoria_id, user_id=user_id)
         db.session.add(p)
         for o in odpowiedzi:
              odp = Odpowiedz(odpowiedz=o['odpowiedz'], poprawna=o['poprawna'])
@@ -45,7 +46,6 @@ def pytanie_edytuj(pid=None):
     form = PytanieForm(request.form, obj=p)
     kategorie = get_kategorie_user(current_user.id)
     form.kategoria_id.choices = [(k.id, k.kategoria) for k in kategorie]
-    form.kategoria_id.data = p.kategoria_id
 
     if form.validate_on_submit():
         form.populate_obj(p)
@@ -53,6 +53,7 @@ def pytanie_edytuj(pid=None):
         flash(f"Zaktualizowano pytanie: {form.pytanie.data}")
         return redirect(url_for("pytania_lista"))
 
+    form.kategoria_id.data = p.kategoria_id
     odpowiedzi = []
     for i, o in enumerate(p.odpowiedzi):
         odpowiedzi.append({'odpowiedz': o.odpowiedz, 'poprawna': o.poprawna})
@@ -92,5 +93,10 @@ def test():
     # GET, wyświetl pytania i odpowiedzi
     # lista_pytan = Pytanie.query.join(Odpowiedz).all()
     wszystkie_pytania = db.session.execute(db.select(Pytanie)).scalars().all()
-    print(wszystkie_pytania)
-    return render_template('pytania/pytania_test.html')
+    odpowiedzi = []
+    for p in wszystkie_pytania:
+        # db.session.execute(db.select(Odpowiedz)).scalars().all()
+        odpowiedzi.append(p.odpowiedzi)
+        # print(p.odpowiedzi)
+    print(odpowiedzi)
+    return render_template('pytania/pytania_test.html', pytania=wszystkie_pytania, odpowiedzi=odpowiedzi)

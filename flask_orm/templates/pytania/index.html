@@ -11,7 +11,7 @@
       {% for obj in items %}
         <li class="my-3">
           <!-- wypisujemy kategorie -->
-          {{ obj.pytanie }}
+          {{ obj.pytanie }} ({{ obj.kategoria }})
           <a href="{{ url_for('pytania.pytanie_edytuj', pid=obj.id ) }}" class="button is-link is-small">Edytuj</a>
           <a href="{{ url_for('pytania.pytanie_usun', pid=obj.id ) }}" class="button is-link is-small">Usuń</a>
         </li>
@@ -23,6 +23,7 @@
     <p class="menu-label">Pytania</p>
     <ul class="menu-list">
       <li><a href="{{ url_for('pytania.pytanie_dodaj') }}">Dodaj pytanie »</a></li>
+      <li><a href="{{ url_for('pytania.test') }}">Test »</a></li>
     </ul>
     </aside>
   </div>
