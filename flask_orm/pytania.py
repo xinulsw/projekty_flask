@@ -55,7 +55,7 @@ def pytanie_edytuj(pid=None):
         form.populate_obj(p)
         db.session.commit()
         flash(f"Zaktualizowano pytanie: {form.pytanie.data}")
-        return redirect(url_for("pytania_lista"))
+        return redirect(url_for("pytania.index"))
 
     form.kategoria_id.data = p.kategoria_id
     odpowiedzi = []
@@ -69,7 +69,7 @@ def pytanie_edytuj(pid=None):
 
 
 @bp.route('/usun/<int:pid>', methods=['GET', 'POST'])
-def pytanie_usun(pid):
+def pytanie_usun(pid=None):
     """Usunięcie pytania o identyfikatorze pid"""
     p = db.get_or_404(Pytanie, pid)
     if request.method == 'POST':
@@ -80,8 +80,8 @@ def pytanie_usun(pid):
     return render_template("pytania/pytanie_usun.html", pytanie=p)
 
 
-@bp.route('/pytania/test', methods=['GET', 'POST'])
-def test():
+@bp.route('/test/<int:kid>', methods=['GET', 'POST'])
+def test(kid=None):
     """Wyświetlenie pytań i odpowiedzi w testu oraz ocena poprawności
     przesłanych odpowiedzi"""
 
@@ -96,7 +96,7 @@ def test():
 
     # GET, wyświetl pytania i odpowiedzi
     # lista_pytan = Pytanie.query.join(Odpowiedz).all()
-    wszystkie_pytania = db.session.execute(db.select(Pytanie)).scalars().all()
+    wszystkie_pytania = db.session.execute(db.select(Pytanie).filter(Pytanie.kategoria_id == int(kid))).scalars().all()
     odpowiedzi = []
     for p in wszystkie_pytania:
         # db.session.execute(db.select(Odpowiedz)).scalars().all()
