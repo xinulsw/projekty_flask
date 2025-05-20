@@ -11,7 +11,11 @@ bp = Blueprint('pytania', __name__, template_folder='pytania')
 
 @bp.route('/')
 def index():
-    return render_template('pytania/index.html')
+    pytania = db.session.execute(
+        db.select(Pytanie, Kategoria).join(Pytanie.kategoria).where(
+            Pytanie.user_id == current_user.id)).scalars().all()
+    kategorie = db.session.execute(db.select(Kategoria)).scalars().all()
+    return render_template('pytania/index.html', items=pytania, kategorie=kategorie)
 
 @bp.route('/dodaj', methods=['GET', 'POST'])
 @login_required

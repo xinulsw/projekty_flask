@@ -28,7 +28,7 @@ def loguj():
             return redirect(url_for('index'))
         flash(error)
 
-    return render_template('users/user_loguj.html')
+    return render_template('users/user_loguj.html', przycisk="Zaloguj")
 
 @bp.before_app_request
 def load_user():
@@ -68,7 +68,7 @@ def dodaj():
             flash(f'Dodano konto {login}')
             return redirect(url_for('index'))
 
-    return render_template('users/user_dodaj.html')
+    return render_template('users/user_dodaj.html', przycisk="Dodaj")
 
 @bp.route('/usun', methods=['GET', 'POST'])
 @login_required

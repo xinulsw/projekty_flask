@@ -1,5 +1,4 @@
 from flask_wtf import FlaskForm
-from pygments.lexer import default
 from wtforms import EmailField, StringField, PasswordField, SubmitField, FormField, HiddenField, IntegerField
 from wtforms import BooleanField, SelectMultipleField, FieldList, SelectField
 from wtforms import widgets

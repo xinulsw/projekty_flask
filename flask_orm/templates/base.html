@@ -29,9 +29,19 @@
     {% endif %}
   {% endwith %}
 
-    <div class="container my-5">
-      {% block body %}{% endblock %}
+  <div class="container my-5">
+    <div class="columns">
+      <div class="column is-four-fifths">
+        {% block body %}{% endblock %}
+      </div>
+    <div class="column">
+      <aside class="menu">
+        {% block sidemenu %}{% endblock %}
+      </aside>
     </div>
+  </div>
+
+  </div>
 
   </div>
 

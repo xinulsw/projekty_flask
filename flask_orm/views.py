@@ -4,7 +4,6 @@ from flask import (
 from flask_login import login_required, current_user
 from flask.views import View
 from .db import db
-from .models import Pytanie, Kategoria
 
 bp = Blueprint('views', __name__)
 
@@ -21,11 +20,11 @@ class ListView(View):
     def dispatch_request(self):
         # items = self.model.query.all()
         if self.is_logged:
-            if isinstance(self.model, Pytanie):
-                items = db.session.execute(
-                    db.select(self.model, Kategoria).join(Pytanie.kategoria).where(self.model.user_id == current_user.id)).scalars().all()
-            else:
-                items = db.session.execute(db.select(self.model).where(self.model.user_id == current_user.id)).scalars().all()
+            # if isinstance(self.model, Pytanie):
+            #     items = db.session.execute(
+            #         db.select(self.model, Kategoria).join(Pytanie.kategoria).where(self.model.user_id == current_user.id)).scalars().all()
+            # else:
+            items = db.session.execute(db.select(self.model).where(self.model.user_id == current_user.id)).scalars().all()
         else:
             items = db.session.execute(db.select(self.model)).scalars().all()
         print('Lista obiektów:', items)

@@ -3,9 +3,6 @@
 {% set active_page = "pytania" %}
 {% block h1 %} Pytania {% endblock %}
 {% block body %}
-
-<div class="columns">
-  <div class="column is-four-fifths">
   <h2 class="subtitle">Lista pytań</h2>
     <ol>
       {% for obj in items %}
@@ -17,15 +14,24 @@
         </li>
       {% endfor %}
     </ol>
-  </div>
-  <div class="column">
-    <aside class="menu">
+{% endblock %}
+{% block sidemenu %}
     <p class="menu-label">Pytania</p>
     <ul class="menu-list">
       <li><a href="{{ url_for('pytania.pytanie_dodaj') }}">Dodaj pytanie »</a></li>
-      <li><a href="{{ url_for('pytania.test') }}">Test »</a></li>
     </ul>
-    </aside>
+<div class="dropdown is-active">
+  <div class="dropdown-trigger">
+    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+      <span>Testy z kategorii</span>
+    </button>
+  </div>
+  <div class="dropdown-menu" id="dropdown-menu" role="menu">
+    <div class="dropdown-content">
+      {% for k in kategorie %}
+        <a href="{{ url_for('pytania.test', kid=k.id) }}" class="dropdown-item"> {{ k.kategoria }} » </a>
+      {% endfor %}
+    </div>
   </div>
 </div>
 {% endblock %}

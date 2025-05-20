@@ -3,9 +3,6 @@
 {% set active_page = "kategorie" %}
 {% block h1 %} Kategorie {% endblock %}
 {% block body %}
-
-<div class="columns">
-  <div class="column is-four-fifths">
   <h2 class="subtitle">Lista kategorii</h2>
     <ol>
       {% for obj in items %}
@@ -19,21 +16,12 @@
         </li>
       {% endfor %}
     </ol>
-  </div>
-
-{% set nawigacja = [
-  ('kategorie.dodaj', 'kategoria_dodaj', 'Dodaj kategorię', 'tak'),
-] %}
-
-{% set active_page = active_page|default('kategorie') %}
-
-  <div class="column">
+{% endblock %}
+{% block sidemenu %}
     <aside class="menu">
     <p class="menu-label">Kategorie</p>
     <ul class="menu-list">
       <li><a href="{{ url_for('kategorie.kategoria_dodaj') }}">Dodaj kategorię »</a></li>
     </ul>
     </aside>
-  </div>
-</div>
 {% endblock %}

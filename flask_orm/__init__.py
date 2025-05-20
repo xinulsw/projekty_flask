@@ -41,11 +41,11 @@ def create_app():
     from . import kategorie
     app.register_blueprint(kategorie.bp, url_prefix='/kategorie')
 
-    from .models import Pytanie
-    app.add_url_rule(
-        '/pytania/',
-        view_func=ListView.as_view('pytania_lista', Pytanie, 'pytania/index.html', 'Lista pytań'),
-    )
+    # from .models import Pytanie
+    # app.add_url_rule(
+    #     '/pytania/',
+    #     view_func=ListView.as_view('pytania_lista', Pytanie, 'pytania/index.html', 'Lista pytań'),
+    # )
 
     from . import pytania
     app.register_blueprint(pytania.bp, url_prefix='/pytania')

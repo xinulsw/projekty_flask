@@ -1,6 +1,4 @@
 from typing import List
-
-from peewee import IntegerField
 from sqlalchemy import Integer, String, Boolean, ForeignKey, event
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from flask_login import UserMixin
