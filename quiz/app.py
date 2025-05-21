@@ -35,7 +35,7 @@ def pytania():
             if odp == dane[int(pnr)]['odpok']:
                 punkty += 1
 
-        flash('Liczba poprawnych odpowiedzi, to: {0}'.format(punkty))
+        flash(f'Liczba poprawnych odpowiedzi, to: {punkty}')
         return redirect(url_for('pytania'))
     return render_template('pytania.html', pytania=dane)
 
