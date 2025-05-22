@@ -8,19 +8,32 @@
   {% for p in pytania %}
       <!-- wypisujemy pytanie -->
     {% set p_nr = loop.index0 %}
-    {{ p }}
+    <div class="field">
+      <label class="label">Pytanie {{ p_nr+1 }}</label>
+      <div class="control">
+        <p class="mt-3">{{ p }}</p>
+      </div>
+    </div>
+    {% if p.l_poprawnych_odp > 1 %}
+      <div class="checkboxes mb-3">
+    {% else %}
+      <div class="radios">
+    {% endif %}
     {% for o in odpowiedzi[p_nr] %}
       {% set o_nr = loop.index0 %}
-      <label>
         {% if p.l_poprawnych_odp > 1 %}
-          <input type="checkbox" name="{{ p_nr }}{{ o_nr }}">
+        <label class="checkbox">
+          <input type="checkbox" name="{{ p_nr }}_{{ o_nr }}">
         {% else %}
-          <input type="radio" value="{{ o.id }}" name="{{ pnr }}">
+        <label class="radio">
+          <input type="radio" value="{{ o.id }}" name="{{ p_nr }}">
         {% endif %}
-        {{ o.odpowiedz }}
-      </label>
+          {{ o.odpowiedz }}
+        </label>
     {% endfor %}
+      </div>
   {% endfor %}
+          <button type="submit" class="button is-block is-info mt-3">Oceń</button>
   </form>
 
 {% endblock %}

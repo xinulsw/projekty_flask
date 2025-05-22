@@ -86,13 +86,14 @@ def test(kid=None):
     przesłanych odpowiedzi"""
 
     if request.method == 'POST':
+        print(request.form)
         wynik = 0
-        for pid, odp in request.form.items():
-            odpok = db.session.query(Pytanie.odpok).filter(Pytanie.id == int(pid)).scalar()
-            if odp == odpok:
-                wynik += 1
-        flash(f'Liczba poprawnych odpowiedzi, to: {wynik}', 'sukces')
-        return redirect(url_for('pytania.index'))
+        # for pid, odp in request.form.items():
+        #     odpok = db.session.query(Pytanie.odpok).filter(Pytanie.id == int(pid)).scalar()
+        #     if odp == odpok:
+        #         wynik += 1
+        # flash(f'Liczba poprawnych odpowiedzi, to: {wynik}', 'sukces')
+        # return redirect(url_for('pytania.index'))
 
     # GET, wyświetl pytania i odpowiedzi
     # lista_pytan = Pytanie.query.join(Odpowiedz).all()
