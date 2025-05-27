@@ -53,3 +53,6 @@ class PytanieForm(FlaskForm):
         if not l_poprawnych_odp:
             raise ValidationError('Przynajmniej jedna odpowiedź musi być poprawna!')
         self.l_poprawnych_odp.data = l_poprawnych_odp
+
+class TestForm(FlaskForm):
+    pytania = FieldList(FormField(PytanieForm), min_entries=1)

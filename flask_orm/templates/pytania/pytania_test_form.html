@@ -1,0 +1,12 @@
+<!-- projekty_flask/quiz_orm/templates/pytania/pytania_lista.html -->
+{% set active_page = "pytania" %}
+{% extends "index.html" %}
+{% block h1 %} Pytania – test {% endblock %}
+{% block body %}
+  <!-- pętla odczytująca kolejne pytania z listy -->
+  <form method="POST" class="form-inline">
+    {{ form }}
+    <button type="submit" class="button is-block is-info mt-3">Oceń</button>
+  </form>
+
+{% endblock %}

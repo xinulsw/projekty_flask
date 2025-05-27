@@ -5,7 +5,7 @@ from flask_login import current_user, login_required
 from .db import db
 from .kategorie import get_kategorie_user
 from .models import Pytanie, Odpowiedz, Kategoria
-from .forms import PytanieForm
+from .forms import PytanieForm, TestForm
 
 bp = Blueprint('pytania', __name__, template_folder='pytania')
 
@@ -84,7 +84,15 @@ def pytanie_usun(pid=None):
 def test(kid=None):
     """Wyświetlenie pytań i odpowiedzi w testu oraz ocena poprawności
     przesłanych odpowiedzi"""
-
+    from werkzeug.datastructures import MultiDict
+    pytania_all = db.session.execute(db.select(Pytanie).filter(Pytanie.kategoria_id == int(kid))).scalars().all()
+    data = {'pytania': pytania_all}
+    #form = InputGridTableForm(request.form, data=MultiDict(data))
+    #print(MultiDict(data))
+    for p in pytania_all:
+        print(p)
+    form = TestForm(request.form, data=data)
+    print(form.data)
     if request.method == 'POST':
         print(request.form)
         wynik = 0
@@ -97,11 +105,10 @@ def test(kid=None):
 
     # GET, wyświetl pytania i odpowiedzi
     # lista_pytan = Pytanie.query.join(Odpowiedz).all()
-    wszystkie_pytania = db.session.execute(db.select(Pytanie).filter(Pytanie.kategoria_id == int(kid))).scalars().all()
     odpowiedzi = []
-    for p in wszystkie_pytania:
+    for p in pytania_all:
         # db.session.execute(db.select(Odpowiedz)).scalars().all()
         odpowiedzi.append(p.odpowiedzi)
         # print(p.odpowiedzi)
     print(odpowiedzi)
-    return render_template('pytania/pytania_test.html', pytania=wszystkie_pytania, odpowiedzi=odpowiedzi)
+    return render_template('pytania/pytania_test_form.html', pytania=form, odpowiedzi=odpowiedzi)
