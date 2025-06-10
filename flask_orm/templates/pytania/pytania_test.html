@@ -5,13 +5,15 @@
 {% block body %}
   <!-- pętla odczytująca kolejne pytania z listy -->
   <form method="POST" class="form-inline">
+  <ol>
   {% for p in pytania %}
       <!-- wypisujemy pytanie -->
+    <li>
     {% set p_nr = loop.index0 %}
     <div class="field">
-      <label class="label">Pytanie {{ p_nr+1 }}</label>
       <div class="control">
-        <p class="mt-3">{{ p }}</p>
+        <p class="label"> {{ p }} </p>
+
       </div>
     </div>
     {% if p.l_poprawnych_odp > 1 %}
@@ -19,20 +21,26 @@
     {% else %}
       <div class="radios">
     {% endif %}
-    {% for o in odpowiedzi[p_nr] %}
+        <ol type="a">
+    {% for o in p.odpowiedzi %}
       {% set o_nr = loop.index0 %}
+        <li>
         {% if p.l_poprawnych_odp > 1 %}
         <label class="checkbox">
-          <input type="checkbox" name="{{ p_nr }}_{{ o_nr }}">
+          <input type="checkbox" name="{{ p.id }}" value="{{ o.id }}">
         {% else %}
         <label class="radio">
-          <input type="radio" value="{{ o.id }}" name="{{ p_nr }}">
+          <input type="radio" name="{{ p.id }}" value="{{ o.id }}">
         {% endif %}
           {{ o.odpowiedz }}
         </label>
+        </li>
     {% endfor %}
+        </ol>
       </div>
+    </li>
   {% endfor %}
+  </ol>
           <button type="submit" class="button is-block is-info mt-3">Oceń</button>
   </form>
 

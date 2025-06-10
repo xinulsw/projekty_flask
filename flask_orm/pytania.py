@@ -84,14 +84,14 @@ def pytanie_usun(pid=None):
 def test(kid=None):
     """Wyświetlenie pytań i odpowiedzi w testu oraz ocena poprawności
     przesłanych odpowiedzi"""
-    from werkzeug.datastructures import MultiDict
+    # from werkzeug.datastructures import MultiDict
     pytania_all = db.session.execute(db.select(Pytanie).filter(Pytanie.kategoria_id == int(kid))).scalars().all()
-    data = {'pytania': pytania_all}
+    # data = {'pytania': pytania_all}
     #form = InputGridTableForm(request.form, data=MultiDict(data))
     #print(MultiDict(data))
     for p in pytania_all:
         print(p)
-    form = TestForm(request.form, data=data)
+
     # print(form.data)
     if request.method == 'POST':
         print(request.form)
@@ -110,5 +110,5 @@ def test(kid=None):
         # db.session.execute(db.select(Odpowiedz)).scalars().all()
         odpowiedzi.append(p.odpowiedzi)
         # print(p.odpowiedzi)
-    print(form.data)
-    return render_template('pytania/pytania_test_form.html', pytania=form['pytania'], odpowiedzi=odpowiedzi)
+    print(pytania_all)
+    return render_template('pytania/pytania_test.html', pytania=pytania_all, odpowiedzi=odpowiedzi)
