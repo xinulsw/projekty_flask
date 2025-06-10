@@ -5,7 +5,30 @@
 {% block body %}
   <!-- pętla odczytująca kolejne pytania z listy -->
   <form method="POST" class="form-inline">
-    {{ form }}
+    <ol>
+    {% for p in pytania %}
+      {{ p.csrf_token }}
+      <li>{{ p.pytanie }}
+        <ol class="is-lower-alpha">
+          {% if p.l_poprawnych_odp.data > 1 %}
+            <div class="checkboxes mb-3">
+          {% else %}
+            <div class="radios">
+          {% endif %}
+          {% for o in p.odpowiedzi %}
+            <li>{{ o.csrf_token }}
+                {% if p.l_poprawnych_odp.data > 1 %}
+                  {{ o.odpowiedz(class="checkbox") }}
+                {% else %}
+                  {{ o.odpowiedz(class="radio") }}
+                {% endif %}
+            </li>
+          {% endfor %}
+            </div>
+        </ol>
+      </li>
+    {% endfor %}
+    </ol>
     <button type="submit" class="button is-block is-info mt-3">Oceń</button>
   </form>
 

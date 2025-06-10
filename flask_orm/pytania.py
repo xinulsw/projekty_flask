@@ -92,7 +92,7 @@ def test(kid=None):
     for p in pytania_all:
         print(p)
     form = TestForm(request.form, data=data)
-    print(form.data)
+    # print(form.data)
     if request.method == 'POST':
         print(request.form)
         wynik = 0
@@ -110,5 +110,5 @@ def test(kid=None):
         # db.session.execute(db.select(Odpowiedz)).scalars().all()
         odpowiedzi.append(p.odpowiedzi)
         # print(p.odpowiedzi)
-    print(odpowiedzi)
-    return render_template('pytania/pytania_test_form.html', pytania=form, odpowiedzi=odpowiedzi)
+    print(form.data)
+    return render_template('pytania/pytania_test_form.html', pytania=form['pytania'], odpowiedzi=odpowiedzi)
