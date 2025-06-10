@@ -32,10 +32,12 @@ class OdpowiedzForm(FlaskForm):
     odpowiedz = StringField('Odpowiedź', validators=[DataRequired(message=blad1)])
     poprawna = BooleanField()
 
-class PytanieForm(FlaskForm):
+class PytanieFormBase(FlaskForm):
     pytanie = StringField('Treść pytania:', validators=[DataRequired(message=blad1)])
     l_poprawnych_odp = IntegerField(widget=HiddenInput())
     odpowiedzi = FieldList(FormField(OdpowiedzForm), min_entries=3)
+
+class PytanieForm(PytanieFormBase):
     kategoria_id = SelectField('Kategoria', coerce=int)
     submit = SubmitField(label='Zapisz')
 
@@ -53,3 +55,6 @@ class PytanieForm(FlaskForm):
         if not l_poprawnych_odp:
             raise ValidationError('Przynajmniej jedna odpowiedź musi być poprawna!')
         self.l_poprawnych_odp.data = l_poprawnych_odp
+
+class TestForm(FlaskForm):
+    pytania = FieldList(FormField(PytanieFormBase), min_entries=1)
