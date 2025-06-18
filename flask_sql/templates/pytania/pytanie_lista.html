@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block tytul %} Lista pytań {% endblock%}
+{% block h1 %} Lista pytań {% endblock %}
+{% block body %}
+<div class="content">
+  <ol>
+  {% for p in pytania %}
+    <li class="my-3">
+      <span class="has-text-weight-semibold">{{ p.pytanie }}</span>
+    </li>
+  {% endfor %}
+  </ol>
+</div>
+{% endblock %}
+{% block sidemenu %}
+    <p class="menu-label has-text-primary-bold">Pytania</p>
+    <ul class="menu-list">
+      <li><a href="{{ url_for('pytania.dodaj') }}">Dodaj pytanie »</a></li>
+    </ul>
+{% endblock %}

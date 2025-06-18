@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block tytul %} Lista zadań {% endblock%}
+{% block h1 %} Lista zadań {% endblock%}
+{% block body %}
+<div class="content">
+  <ol>
+  {% for z in zadania %}
+    <li class="my-3">
+      <span class="has-text-weight-semibold">{{ z.zadanie }}</span> - <span class="is-italic">{{ z.data_dodania }}</span>
+      {% if not z.zrobione %}
+      <form class="is-inline" method="POST" action="{{ url_for('zadania.zrobione') }}">
+        <input type="hidden" name="id" value="{{ z.id }}">
+        <input class="button is-dark is-small" type="submit" value="Wykonane">
+      </form>
+      {% else %}
+      <form class="is-inline" method="POST" action="{{ url_for('zadania.usun') }}">
+        <input type="hidden" name="id" value="{{ z.id }}">
+        <input class="button is-dark is-small" type="submit" value="Usuń">
+      </form>
+      {% endif %}
+
+
+    </li>
+  {% endfor %}
+  </ol>
+
+<p class="my-2"><a class="button is-dark" href="{{ url_for('zadania.dodaj') }}">Dodaj zadanie »»»</a></p>
+</div>
+{% endblock %}
+{% block sidebar %} <p class="notification">Wszystkich zadań: {{ zadania | count }}</p> {% endblock %}

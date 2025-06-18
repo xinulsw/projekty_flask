@@ -1,0 +1,32 @@
+<form method="post" action="">
+    <div class="field">
+        <label class="label" for="pytanie">Pytanie:</label>
+        <div class="control">
+            <input class="input" type="text" name="pytanie" required value="{{ pytanie_form.pytanie }}">
+        </div>
+    </div>
+    <div class="column is-6">
+        <div class="field">
+            <label class="label" for="odp1">Odpowiedź 1:</label>
+            <input class="input" type="text" name="odpowiedzi" id="odp1" required value="{{ pytanie_form.odpowiedzi[0] }}">
+            <label class="checkbox" for="pop1">Poprawna:
+                <input type="checkbox" name="poprawne" id="pop1" value="1">
+            </label>
+        </div>
+        <div class="field">
+            <label class="label" for="odp2">Odpowiedź 2:</label>
+            <input class="input" type="text" name="odpowiedzi" id="odp2" required value="{{ pytanie_form.odpowiedzi[1] }}">
+            <label class="checkbox" for="pop2">Poprawna:
+                <input type="checkbox" name="poprawne" id="pop2" value="2">
+            </label>
+        </div>
+        <div class="field">
+            <label class="label" for="odp3">Odpowiedź 3:</label>
+            <input class="input" type="text" name="odpowiedzi" id="odp3" required value="{{ pytanie_form.odpowiedzi[2] }}">
+            <label class="checkbox" for="pop1">Poprawna:
+                <input type="checkbox" name="poprawne" id="pop3" value="3">
+            </label>
+        </div>
+    </div>
+    <button class="button is-info" type="submit">Dodaj</button>
+</form>

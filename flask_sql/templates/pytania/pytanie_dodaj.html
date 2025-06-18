@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block tytul %} Dodawanie pytań {% endblock %}
+{% block h1 %} Dodawanie pytań {% endblock %}
+{% block body %}
+  {% if errors %}
+    <div class="notification is-warning">
+      <ul>
+    {% for e in errors %}
+        <li>{{ e }}</li>
+    {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+    {% include "pytania/pytanie_form.html" %}
+{% endblock %}

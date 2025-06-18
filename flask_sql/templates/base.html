@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block tytul %} {{ config.SITE_NAME }} {% endblock%}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+</head>
+<body>
+
+ <!-- Hero head: will stick at the top -->
+  <div class="hero-head">
+    <nav class="navbar">
+      <div class="container">
+        <div class="navbar-brand">
+          <a class="navbar-item">
+            <img src="{{ url_for('static', filename='icon.svg') }}" alt="Logo" />
+          </a>
+          <span class="navbar-burger" data-target="navbarMenuHeroA">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </div>
+        <div id="navbarMenuHeroA" class="navbar-menu">
+          <div class="navbar-start">
+
+            <a class="navbar-item" href="{{ url_for('index') }}">Strona główna</a>
+            {% if g.user %}
+              <a class="navbar-item" href="{{ url_for('zadania.index') }}">Zadania</a>
+              <a class="navbar-item" href="{{ url_for('pytania.index') }}">Pytania</a>
+              <a class="navbar-item" href="{{ url_for('czat.index') }}">Wiadomości</a>
+            {% else %}
+              <a class="navbar-item" href="{{ url_for('users.loguj') }}">Zaloguj</a>
+              <a class="navbar-item" href="{{ url_for('users.dodaj') }}">Dodaj konto</a>
+            {% endif %}
+          </div>
+          <div class="navbar-end">
+            {% if g.user %}
+              <span class="navbar-item">Użytkownik: {{ g.user.nick }}</span>
+              <a class="navbar-item" href="{{ url_for('users.wyloguj') }}">Wyloguj</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Hero content: will be in the middle -->
+  <div class="hero-body">
+    <div class="container">
+
+      <div class="container my-5">
+          <div class="columns">
+              <div class="column is-four-fifths">
+                  <h1 class="title">{% block h1 %} {{ config.SITE_NAME }} {% endblock%}</h1>
+                  {% block body %} {% endblock%}
+              </div>
+              <div class="column">
+                  {% block sidebar %}
+                    <p class="my-3 has-text-info">Utwórz konto, zaloguj się, dodawaj zadania, wiadomości i pytania.</p>
+                  {% endblock %}
+                  <aside class="menu">
+                  {% block sidemenu %} {% endblock %}
+                  </aside>
+              </div>
+          </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Hero footer: will stick at the bottom -->
+  <div class="hero-foot">
+    <div class="column is-8 is-offset-2">
+     {% with komunikaty = get_flashed_messages() %}
+      {% if komunikaty %}
+      <div class="notification is-primary">
+        {% for k in komunikaty %}
+          <p>{{ k }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+
+</body>
+</html>
