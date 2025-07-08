@@ -7,19 +7,13 @@
   {% for z in zadania %}
     <li class="my-3">
       <span class="has-text-weight-semibold">{{ z.zadanie }}</span> - <span class="is-italic">{{ z.data_dodania }}</span>
+        <a class="button is-dark is-small" href="{{ url_for('zadania.edytuj', z_id=z.id) }}">Edytuj</a>
       {% if not z.zrobione %}
       <form class="is-inline" method="POST" action="{{ url_for('zadania.zrobione') }}">
-        <input type="hidden" name="id" value="{{ z.id }}">
-        <input class="button is-dark is-small" type="submit" value="Wykonane">
-      </form>
-      {% else %}
-      <form class="is-inline" method="POST" action="{{ url_for('zadania.usun') }}">
-        <input type="hidden" name="id" value="{{ z.id }}">
-        <input class="button is-dark is-small" type="submit" value="Usuń">
+        <input type="hidden" name="z_id" value="{{ z.id }}">
+        <input class="button is-dark is-small" type="submit" value="Zrobione">
       </form>
       {% endif %}
-
-
     </li>
   {% endfor %}
   </ol>

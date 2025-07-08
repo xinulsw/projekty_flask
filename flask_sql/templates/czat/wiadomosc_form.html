@@ -1,8 +1,9 @@
-<form method="post">
+<form class="is-inline" method="post">
+    <input type="hidden" name="w_id" value="{{ wiadomosc.id }}">
     <div class="field">
     <label class="label" for="wiadomosc">Wiadomość:</label>
         <div class="control">
-            <input class="input" type="text" id="wiadomosc" name="wiadomosc" required>
+            <input class="input" type="text" id="wiadomosc" name="wiadomosc" required value="{{ wiadomosc.wiadomosc }}">
         </div>
     </div>
     <button class="button is-info" type="submit">{{ akcja }}</button>

@@ -1,9 +1,15 @@
-<form method="post" action="">
+<form class="is-inline" method="post" action="">
+    <input type="hidden" name="z_id" value="{{ zadanie.id }}">
     <div class="field">
-    <label class="label" for="zadanie">Zadanie:</label>
+        <label class="label" for="zadanie">Zadanie:</label>
         <div class="control">
-            <input class="input" type="text" id="zadanie" name="zadanie" required>
+            <input class="input" type="text" id="zadanie" name="zadanie" value="{{ zadanie.zadanie }}" required>
         </div>
+    </div>
+    <div class="field">
+        <label for="zrobione" class="checkbox">
+            <input type="checkbox" name="zrobione" id="zrobione" {% if zadanie.zrobione %} checked {% endif %}> Zrobione
+        </label>
     </div>
     <button class="button is-info" type="submit">{{ akcja }}</button>
 </form>

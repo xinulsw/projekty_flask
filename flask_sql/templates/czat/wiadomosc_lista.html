@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block tytul %} Lista wiadomości {% endblock%}
+{% block h1 %} Lista wiadomości {% endblock%}
+{% block body %}
+
+  {% for w in wiadomosci %}
+    <div class="box">
+      <span class="text-is-bold">{{ w.nick }}</span>: {{ w.wiadomosc }} - {{ w.data_dodania }}
+    {% if w.user_id == g.user.id %}
+      <a class="button is-dark is-small" href="{{ url_for('czat.edytuj', w_id=w.id) }}">Edytuj</a>
+    {% endif %}
+    </div>
+  {% endfor %}
+
+<p class="my-2"><a class="button is-dark" href="{{ url_for('czat.dodaj') }}">Dodaj wiadomość »»»</a></p>
+
+{% endblock %}

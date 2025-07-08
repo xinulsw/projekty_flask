@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block tytul %}
+    Edycja wiadomości
+{% endblock%}
+{% block h1 %}
+    Edycja wiadomości
+{% endblock%}
+{% block body %}
+    {% include "czat/wiadomosc_form.html" %}
+    <form class="is-inline" action="{{ url_for('czat.usun') }}" method="post">
+      <input type="hidden" name="w_id" value="{{ wiadomosc.id }}">
+      <input class="button is-warning" type="submit" value="Usuń" onclick="return confirm('Jesteś pewien?');">
+    </form>
+{% endblock%}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block tytul %}
+    Edycja zadania
+{% endblock%}
+{% block h1 %}
+    Edycja zadania
+{% endblock%}
+{% block body %}
+    {% include "zadania/zadanie_form.html" %}
+    <form class="is-inline" action="{{ url_for('zadania.usun', z_id=zadanie.id) }}" method="post">
+      <input class="button is-warning" type="submit" value="Usuń" onclick="return confirm('Jesteś pewien?');">
+    </form>
+{% endblock%}

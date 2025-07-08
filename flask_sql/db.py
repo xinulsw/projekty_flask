@@ -27,6 +27,9 @@ def query_db(query, args=(), one=False):
     cur.close()
     return (rv[0] if rv else None) if one else rv
 
+def update_db(query, args=()):
+    cur = get_db().execute(query, args)
+
 def init_db():
     """Funkcja tworzy bazę i tabele"""
     from werkzeug.security import generate_password_hash
