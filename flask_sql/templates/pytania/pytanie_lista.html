@@ -7,6 +7,7 @@
   {% for p in pytania %}
     <li class="my-3">
       <span class="has-text-weight-semibold">{{ p.pytanie }}</span>
+        <a class="button is-dark is-small" href="{{ url_for('pytania.edytuj', p_id=p.id) }}">Edytuj</a>
     </li>
   {% endfor %}
   </ol>

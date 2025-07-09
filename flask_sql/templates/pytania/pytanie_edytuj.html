@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block tytul %}
+    Edycja pytania
+{% endblock%}
+{% block h1 %}
+    Edycja pytania
+{% endblock%}
+{% block body %}
+    {% include "pytania/pytanie_form.html" %}
+    <form class="is-inline" action="{{ url_for('pytania.usun', p_id=pytanie_form.id) }}" method="post">
+      <input class="button is-warning" type="submit" value="Usuń" onclick="return confirm('Jesteś pewien?');">
+    </form>
+{% endblock%}

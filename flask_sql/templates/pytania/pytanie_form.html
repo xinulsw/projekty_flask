@@ -1,8 +1,8 @@
-<form method="post" action="">
+<form method="post" action="" class="is-inline">
     <div class="field">
         <label class="label" for="pytanie">Pytanie:</label>
         <div class="control">
-            <input class="input" type="text" name="pytanie" required value="{{ pytanie_form.pytanie }}">
+            <input class="input" type="text" id="pytanie" name="pytanie" required value="{{ pytanie_form.pytanie }}">
         </div>
     </div>
     <div class="column is-6">
@@ -10,21 +10,21 @@
             <label class="label" for="odp1">Odpowiedź 1:</label>
             <input class="input" type="text" name="odpowiedzi" id="odp1" required value="{{ pytanie_form.odpowiedzi[0] }}">
             <label class="checkbox" for="pop1">Poprawna:
-                <input type="checkbox" name="poprawne" id="pop1" value="1">
+                <input type="checkbox" name="poprawne" id="pop1" value="1" {% if '1' in pytanie_form['poprawne'] %}checked{% endif %}>
             </label>
         </div>
         <div class="field">
             <label class="label" for="odp2">Odpowiedź 2:</label>
             <input class="input" type="text" name="odpowiedzi" id="odp2" required value="{{ pytanie_form.odpowiedzi[1] }}">
             <label class="checkbox" for="pop2">Poprawna:
-                <input type="checkbox" name="poprawne" id="pop2" value="2">
+                <input type="checkbox" name="poprawne" id="pop2" value="2" {% if '2' in pytanie_form['poprawne'] %}checked{% endif %}>
             </label>
         </div>
         <div class="field">
             <label class="label" for="odp3">Odpowiedź 3:</label>
             <input class="input" type="text" name="odpowiedzi" id="odp3" required value="{{ pytanie_form.odpowiedzi[2] }}">
             <label class="checkbox" for="pop1">Poprawna:
-                <input type="checkbox" name="poprawne" id="pop3" value="3">
+                <input type="checkbox" name="poprawne" id="pop3" value="3" {% if '3' in pytanie_form['poprawne'] %}checked{% endif %}>
             </label>
         </div>
     </div>

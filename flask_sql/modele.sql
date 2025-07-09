@@ -27,7 +27,9 @@ CREATE TABLE wiadomosc (
 DROP TABLE IF EXISTS pytanie;
 CREATE TABLE pytanie (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    pytanie TEXT NOT NULL
+    user_id INTEGER,
+    pytanie TEXT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS odpowiedz;
