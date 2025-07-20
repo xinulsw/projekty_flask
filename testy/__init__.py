@@ -50,6 +50,9 @@ def create_app():
     from . import pytania
     app.register_blueprint(pytania.bp, url_prefix='/pytania')
 
+    from . import testy
+    app.register_blueprint(testy.bp, url_prefix='/testy')
+
     @app.route('/')
     def index():
         # return 'Cześć, tu Python i Flask!'

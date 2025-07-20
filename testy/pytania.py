@@ -14,7 +14,7 @@ def index():
     pytania = db.session.execute(
         db.select(Pytanie, Kategoria).join(Pytanie.kategoria).where(
             Pytanie.user_id == current_user.id)).scalars().all()
-    kategorie = db.session.execute(db.select(Kategoria)).scalars().all()
+    kategorie = get_kategorie_user(current_user.id)
     return render_template('pytania/index.html', items=pytania, kategorie=kategorie)
 
 @bp.route('/dodaj', methods=['GET', 'POST'])
@@ -38,7 +38,7 @@ def pytanie_dodaj():
              p.odpowiedzi.append(odp)
         db.session.commit()
         flash(f'Dodano pytanie: {pytanie}')
-        return redirect(url_for('pytania_lista'))
+        return redirect(url_for('pytania.index'))
 
     return render_template('pytania/pytanie_dodaj.html', form=form)
 
@@ -80,19 +80,11 @@ def pytanie_usun(pid=None):
     return render_template("pytania/pytanie_usun.html", pytanie=p)
 
 
-@bp.route('/test/<int:kid>', methods=['GET', 'POST'])
-def test(kid=None):
-    """Wyświetlenie pytań i odpowiedzi w testu oraz ocena poprawności
-    przesłanych odpowiedzi"""
-    # from werkzeug.datastructures import MultiDict
-    pytania_all = db.session.execute(db.select(Pytanie).filter(Pytanie.kategoria_id == int(kid))).scalars().all()
-    # data = {'pytania': pytania_all}
-    #form = InputGridTableForm(request.form, data=MultiDict(data))
-    #print(MultiDict(data))
-    for p in pytania_all:
-        print(p)
-
-    # print(form.data)
+@bp.route('/kategoria/<int:k_id>', methods=['GET', 'POST'])
+def kategoria(k_id=None):
+    """Wyświetlenie pytań danej kategorii"""
+    pytania = db.session.execute(db.select(Pytanie).filter(Pytanie.kategoria_id == int(k_id))).scalars().all()
+    kategorie = get_kategorie_user()
     if request.method == 'POST':
         print(request.form)
         wynik = 0
@@ -105,10 +97,5 @@ def test(kid=None):
 
     # GET, wyświetl pytania i odpowiedzi
     # lista_pytan = Pytanie.query.join(Odpowiedz).all()
-    odpowiedzi = []
-    for p in pytania_all:
-        # db.session.execute(db.select(Odpowiedz)).scalars().all()
-        odpowiedzi.append(p.odpowiedzi)
-        # print(p.odpowiedzi)
-    print(pytania_all)
-    return render_template('pytania/pytania_test.html', pytania=pytania_all, odpowiedzi=odpowiedzi)
+    print(type(pytania))
+    return render_template('pytania/index.html', items=pytania, kategorie=kategorie)

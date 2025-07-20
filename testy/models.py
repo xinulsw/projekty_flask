@@ -1,10 +1,12 @@
 from typing import List
-from sqlalchemy import Integer, String, Boolean, ForeignKey, event
+
+from pygments.lexer import default
+from sqlalchemy import Integer, String, Boolean, ForeignKey, event, Table, Column
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from flask_login import UserMixin
 from wtforms import SelectMultipleField, widgets, HiddenField, RadioField
 
-from .db import db
+from .db import db, Base
 
 
 class User(UserMixin, db.Model):
@@ -12,12 +14,12 @@ class User(UserMixin, db.Model):
     email: Mapped[str] = mapped_column(String(120), unique=True)
     nick: Mapped[str] = mapped_column(String(50))
     haslo: Mapped[str] = mapped_column(String(256))
-    kategorie: Mapped[List['Kategoria']] = relationship(
-        'Kategoria', back_populates='user',
-        cascade='all, delete-orphan')
-    pytania: Mapped[List['Pytanie']] = relationship(
-        'Pytanie', back_populates='user',
-        cascade='all, delete-orphan')
+    kategorie: Mapped[List['Kategoria']] = relationship('Kategoria', back_populates='user',
+                                                        cascade='all, delete-orphan')
+    pytania: Mapped[List['Pytanie']] = relationship('Pytanie', back_populates='user',
+                                                    cascade='all, delete-orphan')
+    testy: Mapped[List['Test']] = relationship('Test', back_populates='user',
+                                               cascade='all, delete-orphan')
 
     def __init__(self, email=None, nick=None, haslo=None):
         self.email = email
@@ -43,8 +45,8 @@ class Kategoria(db.Model):
     kategoria: Mapped[str] = mapped_column(String(50), unique=True)
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id', onupdate='CASCADE', ondelete='CASCADE'))
     user: Mapped['User'] = relationship(back_populates='kategorie')
-    pytania: Mapped[List['Pytanie']] = relationship(
-        'Pytanie', back_populates='kategoria')
+    pytania: Mapped[List['Pytanie']] = relationship('Pytanie', back_populates='kategoria')
+    testy: Mapped[List['Test']] = relationship('Test', back_populates='kategoria')
 
     def __repr__(self):
         return self.kategoria
@@ -62,12 +64,12 @@ class Pytanie(db.Model):
     pytanie: Mapped[str] = mapped_column(String(255), unique=True)
     l_poprawnych_odp: Mapped[int] = mapped_column(Integer, default=1)
     kategoria_id: Mapped[int] = mapped_column(ForeignKey('kategoria.id', onupdate='CASCADE', ondelete='SET NULL'))
-    kategoria: Mapped['Kategoria'] = relationship(back_populates='pytania')
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id', onupdate='CASCADE', ondelete='SET NULL'))
+    kategoria: Mapped['Kategoria'] = relationship(back_populates='pytania')
     user: Mapped['User'] = relationship(back_populates='pytania')
-    odpowiedzi: Mapped[List['Odpowiedz']] = relationship(
-        'Odpowiedz', back_populates='pytanie',
-        cascade='all, delete-orphan')
+    odpowiedzi: Mapped[List['Odpowiedz']] = relationship('Odpowiedz', back_populates='pytanie',
+                                                         cascade='all, delete-orphan')
+    # test: Mapped['Test'] = relationship(back_populates='testy')
 
     def __repr__(self):
         return self.pytanie
@@ -83,15 +85,27 @@ class Odpowiedz(db.Model):
     def __repr__(self):
         return f'{self.odpowiedz} ({self.poprawna})'
 
-# class MultiCheckboxField(SelectMultipleField):
-#     """
-#     A multiple-select, except displays a list of checkboxes.
-#
-#     Iterating the field will produce subfields, allowing custom rendering of
-#     the enclosed checkbox fields.
-#     """
-#     widget = widgets.ListWidget(prefix_label=False)
-#     option_widget = widgets.CheckboxInput()
+
+class Test(db.Model):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    test: Mapped[str] = mapped_column(String(255), unique=True)
+    kategoria_id: Mapped[int] = mapped_column(ForeignKey('kategoria.id', onupdate='CASCADE', ondelete='SET NULL'))
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id', onupdate='CASCADE', ondelete='SET NULL'))
+    kategoria: Mapped['Kategoria'] = relationship(back_populates='testy')
+    user: Mapped['User'] = relationship(back_populates='testy')
+    Pytania: Mapped[List[Pytanie]] = relationship('Pytanie', secondary='test_pytanie_m2m', lazy='subquery')
+
+    def __repr__(self):
+        return self.test
+
+
+test_pytanie_m2m = Table(
+    'test_pytanie_m2m',
+    Base.metadata,
+    Column('t_id', ForeignKey('test.id'), primary_key=True),
+    Column('p_id', ForeignKey('pytanie.id'), primary_key=True)
+)
+
 #
 # class OdpowiedziCheckbox(db.Model):
 #     p_id = HiddenField()

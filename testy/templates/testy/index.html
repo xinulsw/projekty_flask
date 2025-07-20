@@ -1,0 +1,37 @@
+<!-- projekty_flask/quiz_orm/templates/pytania/index.html -->
+{% extends "base.html" %}
+{% set active_page = "testy" %}
+{% block h1 %} Testy {% endblock %}
+{% block body %}
+  <h2 class="subtitle">Lista testów</h2>
+    <ol>
+      {% for obj in items %}
+        <li class="my-3">
+          <!-- wypisujemy kategorie -->
+          {{ obj.test }} ({{ obj.kategoria }})
+          <a href="{{ url_for('testy.edytuj', t_id=obj.id ) }}" class="button is-link is-small">Edytuj</a>
+          <a href="{{ url_for('testy.usun', t_id=obj.id ) }}" class="button is-link is-small">Usuń</a>
+        </li>
+      {% endfor %}
+    </ol>
+{% endblock %}
+{% block sidemenu %}
+    <p class="menu-label">Testy</p>
+    <ul class="menu-list">
+      <li><a href="{{ url_for('testy.dodaj') }}">Dodaj test »</a></li>
+    </ul>
+<div class="dropdown is-hoverable">
+  <div class="dropdown-trigger">
+    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+      <span>Testy z kategorii</span>
+    </button>
+  </div>
+  <div class="dropdown-menu" id="dropdown-menu" role="menu">
+    <div class="dropdown-content">
+      {% for k in kategorie %}
+        <a href="{{ url_for('testy.kategoria', k_id=k.id) }}" class="dropdown-item"> {{ k.kategoria }} » </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

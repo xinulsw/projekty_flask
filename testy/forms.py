@@ -56,5 +56,23 @@ class PytanieForm(PytanieFormBase):
             raise ValidationError('Przynajmniej jedna odpowiedź musi być poprawna!')
         self.l_poprawnych_odp.data = l_poprawnych_odp
 
+class PytanieTest(FlaskForm):
+    pytanie_id = IntegerField('Identyfikator')
+    pytanie = StringField('Treść pytania:')
+
+class MultiCheckboxField(SelectMultipleField):
+    """
+    A multiple-select, except displays a list of checkboxes.
+
+    Iterating the field will produce subfields, allowing custom rendering of
+    the enclosed checkbox fields.
+    """
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput()
+
 class TestForm(FlaskForm):
-    pytania = FieldList(FormField(PytanieFormBase), min_entries=1)
+    test = StringField('Nazwa:', validators=[DataRequired(message=blad1)])
+    kategoria_id = SelectField('Kategoria', coerce=int)
+    pytania = MultiCheckboxField('Pytania:', coerce=int)
+    # pytania = FieldList(FormField(PytanieTest), min_entries=1)
+    submit = SubmitField(label='Zapisz')

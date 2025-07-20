@@ -16,10 +16,10 @@
 
           {% for o in form.odpowiedzi %}
             {{ o.csrf_token }}
+            {{ o.odpowiedz(class="input mt-2") }}
             <label class="checkbox">
               Poprawna: {{ o.poprawna(class="checkbox mb-2") }}
             </label>
-            {{ o.odpowiedz(class="input mt-2") }}
           {% endfor %}
        </div>
     </div>

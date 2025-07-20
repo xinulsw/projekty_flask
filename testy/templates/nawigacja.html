@@ -1,11 +1,11 @@
 {% set nawigacja_1 = [
   ('kategorie_lista', 'kategorie', 'Kategorie', 'tak'),
   ('pytania.index', 'pytania', 'Pytania', 'tak'),
+  ('testy.index', 'testy', 'Testy', 'tak'),
   ('users.dodaj', 'dodaj', 'Utwórz konto', 'nie'),
   ('users.loguj', 'loguj', 'Zaloguj się', 'nie'),
 ] %}
 {% set nawigacja_2 = [
-
   ('users.wyloguj', 'dodaj', 'Wyloguj się', 'tak'),
   ('users.usun', 'usun', 'Usuń konto', 'tak'),
 ] %}
@@ -38,8 +38,7 @@
                   {{ tekst|e }}
                 </a>
                 {% endif %}
-              {% endif %}
-              {% if current_user.is_authenticated %}
+              {% else %}
                 {% if zalogowany == 'tak' %}
                 <a class="navbar-item{% if id == active_page %} is-active{% endif %}" href="{{ url_for(href) }}">
                   {{ tekst|e }}

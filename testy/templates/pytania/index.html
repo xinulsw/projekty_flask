@@ -7,7 +7,7 @@
     <ol>
       {% for obj in items %}
         <li class="my-3">
-          <!-- wypisujemy kategorie -->
+          <!-- wypisujemy pytania -->
           {{ obj.pytanie }} ({{ obj.kategoria }})
           <a href="{{ url_for('pytania.pytanie_edytuj', pid=obj.id ) }}" class="button is-link is-small">Edytuj</a>
           <a href="{{ url_for('pytania.pytanie_usun', pid=obj.id ) }}" class="button is-link is-small">Usuń</a>
@@ -23,13 +23,13 @@
 <div class="dropdown is-hoverable">
   <div class="dropdown-trigger">
     <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-      <span>Testy z kategorii</span>
+      <span>Pytania z kategorii</span>
     </button>
   </div>
   <div class="dropdown-menu" id="dropdown-menu" role="menu">
     <div class="dropdown-content">
       {% for k in kategorie %}
-        <a href="{{ url_for('pytania.test', kid=k.id) }}" class="dropdown-item"> {{ k.kategoria }} » </a>
+        <a href="{{ url_for('pytania.kategoria', k_id=k.id) }}" class="dropdown-item"> {{ k.kategoria }} » </a>
       {% endfor %}
     </div>
   </div>

@@ -1,0 +1,36 @@
+<div class="column is-5 is-offset-4">
+    <h3 class="subtitle">Dodaj test</h3>
+    <div class="box">
+
+  <form method="POST">
+      {{ form.csrf_token }}
+    <div class="field">
+      <div class="control">
+        {{ form.test.label(class="label") }}
+        {{ form.test(class="input") }}
+      </div>
+    </div>
+    <div class="field">
+        {{ form.kategoria_id.label(class="label") }}
+        <div class="control">
+            <div class="select">
+            {{ form.kategoria_id }}
+            </div>
+       </div>
+    </div>
+    <fieldset class="form-group">
+      {% for p in form.pytania %}
+        <div class="field">
+          <div class="label">
+            {{ p.label(class="checkbox") }}
+            <input type="text" name="" id="">
+          </div>
+
+            {{ p(class="checkbox") }}
+        </div>
+      {% endfor %}
+    </fieldset>
+    {{ form.submit(class="button is-block is-info is-fullwidth mt-3") }}
+  </form>
+  </div>
+</div>

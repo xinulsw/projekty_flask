@@ -8,11 +8,11 @@ Najprostsza aplikacja wykorzystująca Flask i dane zapisane w liście słownikó
 Wyświetla pytania, pozwala użytkownikowi zaznaczyć poprawne odpowiedzi,
 na koniec zwraca liczbę odpowiedzi poprawnych.
 
-## ToDo
+## Flask SQL
 
-Aplikacja Flask korzystająca z modułów (Blueprint) oraz bazy SQLite3 i zapytań SQL do stworzenia listy zadań.
-Aplikacja pokazuje podstawy obsługi użytkowników: dodawanie, usuwanie kont, logowanie i wylogowywanie.
-Zalogowany użytkownik może dodawać zadania i oznaczać je jako wykonane. 
+Aplikacja Flask korzystająca z modułów (Blueprint) oraz bazy SQLite3 i zapytań SQL do stworzenia listy zadań,
+listy pytań i prostego czatu. Aplikacja ilustruje podstawy obsługi użytkowników: dodawanie, usuwanie kont, logowanie i wylogowywanie.
+Zalogowany użytkownik może wykonywać operacje CRUD na zadaniach, pytaniach i wiadomościach. 
 
 ## Testy
 
