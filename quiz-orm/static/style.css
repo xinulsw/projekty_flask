@@ -1,0 +1,4 @@
+@media (prefers-color-scheme: light) {
+  :root {
+      --bulma-link-h: 200deg;
+  }}

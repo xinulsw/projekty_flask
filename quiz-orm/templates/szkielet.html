@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block tytul %}{% endblock %} Quiz ORM &#8211; Strona główna{{ config.TYTUL }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+{% set navigation_bar = [
+  ('/', 'index', 'Strona główna'),
+  ('/lista', 'lista', 'Lista pytań'),
+  ('/quiz', 'quiz', 'Quiz'),
+  ('/dodaj', 'dodaj', 'Dodaj pytania'),
+] %}
+{% set active_page = active_page|default('index') %}
+
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="http://flask.pocoo.org/">
+                    <img src="{{ url_for('static', filename='flask.png') }}">
+                </a>
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMain">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbarMain" class="navbar-menu">
+                <div class="navbar-start">
+            {% for href, id, tekst in navigation_bar %}
+              {% if id == active_page %}
+                <a class="navbar-item is-active" href="{{ href|e }}">{{ tekst|e }}</a>
+              {% else %}
+                <a class="navbar-item" href="{{ href|e }}">{{ tekst|e }}</a>
+              {% endif %}
+            {% endfor %}
+                </div>
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-light">Zaloguj</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero is-light">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">{% block h1 %}Aplikacja WWW Quiz{% endblock %}</h1>
+                <h2 class="subtitle">{% block h2 %}Flask + Bulma + ORM{% endblock %}</h2>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-four-fifths">
+                    <div class="content">
+
+                    {% with komunikaty = get_flashed_messages(with_categories=true) %}
+                        {% if komunikaty %}
+                        <div class="message is-info">
+                            <div class="message-header">Komunikaty</div>
+                            <div class="message-body">
+                            {% for kategoria, komunikat in komunikaty %}
+                                <p class="{{ kategoria }}">{{ komunikat }}</p>
+                            {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endwith %}
+
+                    <h3 class="title is-4">{% block h3 %}Strona główna{% endblock %}</h3>
+                        {% block tresc %}{% endblock %}
+                    </div>
+                </div>
+
+                <div class="column is-one-fifth">
+                    <aside class="menu">
+                        <p class="menu-label">Nawigacja boczna</p>
+                        <ul class="menu-list">
+                            <li><a>Link 1</a></li>
+                            <li><a>Link 2</a></li>
+                            <li><a>Link 3</a></li>
+                            <li><a>Link 4</a></li>
+                        </ul>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="content has-text-centered">
+                <p>
+                    <strong>Projekt strony</strong> wykonany w frameworku <a href="https://bulma.io">Bulma</a>.
+                    &copy; 2026 Wszystkie prawa zastrzeżone.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+            if ($navbarBurgers.length > 0) {
+                $navbarBurgers.forEach( el => {
+                    el.addEventListener('click', () => {
+                        const target = el.dataset.target;
+                        const $target = document.getElementById(target);
+                        el.classList.toggle('is-active');
+                        $target.classList.toggle('is-active');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
