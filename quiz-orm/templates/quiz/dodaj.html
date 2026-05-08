@@ -1,0 +1,8 @@
+<!-- quiz-orm/templates/dodaj.html -->
+{% extends "szkielet.html" %}
+{% set active_page = "dodaj" %}
+{% block tytul %}Dodawanie{% endblock%}
+{% block h1 %}Quiz ORM &#8211; dodawanie pytań{% endblock%}
+{% block tresc %}
+  {% include "quiz/pytanie_form.html" %}
+{% endblock %}

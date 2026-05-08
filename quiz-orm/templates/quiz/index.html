@@ -1,0 +1,15 @@
+{% extends "szkielet.html" %}
+{% set active_page = "lista" %}
+{% block tytul %}Lista pytań{% endblock%}
+{% block h1 %}Quiz ORM &#8211; lista pytań{% endblock%}
+{% block tresc %}
+  <ol>
+  <!-- pętla odczytująca kolejne pytania z listy -->
+  {% for p in pytania %}
+    <li>
+      <!-- wypisujemy pytanie -->
+      {{ p.tresc }} {{ p.kategoria.nazwa }}
+    </li>
+  {% endfor %}
+  </ol>
+{% endblock %}
